@@ -25,7 +25,7 @@ airbnb = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?
 #st.write(f'{n} + 1 = {n+1}')
 #
 #s = st.text_input('Type a name in the box below')
-newdf1 = df1.groupby(['Suburb', 'Address'])
+newdf1 = airbnb.groupby(['Suburb', 'Address'])
   
 # print new dataframe
 print(newdf1)
