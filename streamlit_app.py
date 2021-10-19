@@ -7,7 +7,7 @@ run the app by installing streamlit with pip and typing
 
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import missingno as msno
