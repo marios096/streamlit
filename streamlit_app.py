@@ -15,8 +15,7 @@ import datetime as dt
 
 # Read in the dataset
 airbnb = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
-airbnb.head()
-airbnb.dtypes
+
 #st.title('Simple Streamlit App')
 
 #st.text('Type a number in the box below')
@@ -27,4 +26,4 @@ airbnb.dtypes
 #
 #s = st.text_input('Type a name in the box below')
 
-#st.write(f'Hello {s}')
+st.write(f'Hello {airbnb.head()}')
