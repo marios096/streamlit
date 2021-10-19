@@ -6,15 +6,25 @@ run the app by installing streamlit with pip and typing
 """
 
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import missingno as msno
+import datetime as dt
 
-st.title('Simple Streamlit App')
+# Read in the dataset
+airbnb = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
+airbnb.head()
+airbnb.dtypes
+#st.title('Simple Streamlit App')
 
-st.text('Type a number in the box below')
+#st.text('Type a number in the box below')
 
-n = st.number_input('Number', step=1)
+#n = st.number_input('Number', step=1)
 
-st.write(f'{n} + 1 = {n+1}')
+#st.write(f'{n} + 1 = {n+1}')
+#
+#s = st.text_input('Type a name in the box below')
 
-s = st.text_input('Type a name in the box below')
-
-st.write(f'Hello {s}')
+#st.write(f'Hello {s}')
