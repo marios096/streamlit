@@ -28,5 +28,5 @@ airbnb = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?
 newdf1 = airbnb.groupby(['Suburb', 'Address'])
   
 # print new dataframe
-print(newdf1)
-#st.write(f'Hello {airbnb.head()}')
+#print(newdf1)
+st.write(f'Hello {newdf1}')
