@@ -6,28 +6,63 @@ from datetime import date
 
 
 def streamlit_app():
-    st.title('🤑 Price Prediction 💰')
-    st.info('This app displays the prices distributed by location and date')
-
-    st.text("")
-    st.text("")
-
-    st.sidebar.text("")
-    st.sidebar.text("")
-
-    st.sidebar.title("🔗 Sources")
-    st.sidebar.info(
-        '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
-
-    st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Marios Charalambous]  \n[Antonis Savvidis]')
-    pd.set_option('precision', 2)
+    
 
     with st.spinner(text='Loading Data! Please wait...'):
         clean_data = load_data_vac()
 
     st.text("")
 
+#    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed',
+ #               'Positively Rate']
+  #  colors_dict = {'daily new cases': '#1f77b4', 'daily deaths': '#2ca02c', 'Hospitalised Cases': '#9467bd',
+   #                'Cases In ICUs': '#e377c2', 'total_daily tests performed': '#bcbd22', 'Positively Rate': '#bc7722'}
+
+    #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
+    #col1, col2, col3, col4 = st.beta_columns(4)
+    #col1, col2, col3 = st.beta_columns(3)
+
+   # with col1:
+     #   st.warning('Confirmed cases: ' + str(int(cyprus_df['total cases'].iloc[-1])))
+
+   # with col2:
+    #    st.success('Total tests: ' + str(int(cyprus_df['total tests'].iloc[-1])))
+
+   # with col3:
+    #    st.error('Deaths: ' + str(int(cyprus_df['total deaths'].iloc[-1])))
+
+   # with col4:
+     #   st.info('Population Fully Vaccinated: ' + str(
+     #       '{0:.2f}'.format(int(
+       # ['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
+
+#    with col1:
+ #       st.subheader("Dates")
+  #      from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
+   #     to_date = st.date_input("To Date:", datetime.date.today())
+    #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
+
+    #with col2:
+     #   st.subheader("Options")
+      #  if st.checkbox('Logarithmic scale'):
+     #       yaxistype = "log"
+    #    else:
+    #        yaxistype = "linear"
+
+       # if st.checkbox('5 Days Moving Average'):
+      #      plot_df = filtered_df.rolling(5).sum()
+    #    else:
+     #       plot_df = filtered_df
+
+  #  with col3:
+       # st.subheader("Features")
+      #  multiselection = st.multiselect("", features, default=features)
+
+        #plot_df['Dates'] = filtered_df["Dates"]
+
+   # if len(multiselection) > 0:
+     #   with st.beta_expander("Raw data", expanded=False):
+       # st.dataframe(plot_df[["Dates"]])
    st.dataframe(clean_data)
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
