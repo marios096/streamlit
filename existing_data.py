@@ -80,7 +80,7 @@ def streamlit_app():
        # st.dataframe(plot_df[["Dates"]])
    #st.dataframe(clean_data)
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
-
+    st.write(clean_data)
   #  st.subheader(
    #     'Rapid test units for ' + date.today().strftime('%d-%m-%Y') + ' (by [@lolol20](https://twitter.com/lolol20))')
 
