@@ -27,7 +27,7 @@ def streamlit_app():
 
     st.text("")
 
-    #st.dataframe(clean_data)
+    st.dataframe(clean_data)
    # print(clean_data)
 
 
@@ -43,10 +43,11 @@ def load_data_vac():
     #pd.set_option('precision', 2)
 
     #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
-    df.round(2)
+    #df.round(2)
+    pd.set_option('display.float_format', '{:.2f}'.format)
+
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
-    print(df)
     return df
 
 
