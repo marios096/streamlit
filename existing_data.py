@@ -45,6 +45,7 @@ def load_data_vac():
     #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
     #df.round(2)
     #pd.set_option('display.float_format', '{:.2f}'.format)
+    df.applymap(lambda x: str(int(x)) if abs(x - int(x)) < 1e-6 else str(round(x,2)))
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
     return df
