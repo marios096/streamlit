@@ -21,9 +21,8 @@ def streamlit_app():
 
     st.sidebar.title("🛈 About")
     st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Marios Charalambous]  \n[Antonis Savvidis]')
-    pd.set_option('precision', 2)
 
-    with st.spinner(text='Loading Data! Please wait...'):
+    #with st.spinner(text='Loading Data! Please wait...'):
         clean_data = load_data_vac()
 
     st.text("")
