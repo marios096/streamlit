@@ -27,7 +27,9 @@ def streamlit_app():
 
     st.text("")
 
-    st.dataframe(clean_data)
+    with pd.option_context('display.precision', 2):
+        st.dataframe(clean_data)
+    
    # print(clean_data)
 
 
