@@ -55,7 +55,7 @@ def streamlit_app():
         st.subheader("Dates")
         from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
         to_date = st.date_input("To Date:", datetime.date.today())
-        filtered_df = cyprus_vac_df[cyprus_vac_df["Date"].isin(pd.date_range(from_date, to_date))]
+        filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
 
     with col2:
         st.subheader("Options")
@@ -74,11 +74,11 @@ def streamlit_app():
         st.subheader("Features")
         multiselection = st.multiselect("", features, default=features)
 
-     plot_df['Date'] = filtered_df["Date"]
+        plot_df['Dates'] = filtered_df["Dates"]
 
     if len(multiselection) > 0:
         with st.beta_expander("Raw data", expanded=False):
-            st.dataframe(plot_df[["Date"] + multiselection])
+            st.dataframe(plot_df[["Dates"] + multiselection])
 
         plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
@@ -88,13 +88,13 @@ def streamlit_app():
    # components.iframe("https://covidmap.cy/", height=480, scrolling=False)
 
 
-@st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
-def load_data():
+#@st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
+#def load_data():
     # df = pd.read_csv('https://raw.githubusercontent.com/xristofo/streamlit/main/share/data/owid-covid-data-cy.csv',error_bad_lines=False)
-    df = pd.read_csv('https://www.data.gov.cy/node/4844/download', error_bad_lines=False)
-    df = data_cleaning(df)
+  #  df = pd.read_csv('https://www.data.gov.cy/node/4844/download', error_bad_lines=False)
+   # df = data_cleaning(df)
 
-    return df
+#    return df
 
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
@@ -103,7 +103,13 @@ def load_data_vac():
   #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
     df = df.dropna(subset=['Price'])
+    df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
+    df['Dates'] = df[df.columns[16:12:-1]].apply(
+        lambda x: '-'.join(x.dropna().astype(str)),
+        axis=1)
 
+    df = df.drop(columns=['Date', 'day', 'month', 'year'])
+  #  airbnb.head()
     return df
 
 
@@ -113,7 +119,7 @@ def plot_date(df, selection, colors_dict, yaxistype):
 
     for selected_column in selection:
         linecolor = colors_dict[selected_column]
-        plot.line(df['date'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5,
+        plot.line(df['Dates'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5,
                   color=linecolor)
 
     plot.legend.location = "top_left"
@@ -126,6 +132,6 @@ def data_cleaning(df):
         df[column].replace(["NaN", ":"], 0, inplace=True)
         df[column] = df[column].fillna(0)
 
-    df['date'] = pd.to_datetime(df['date'], exact=False, dayfirst=True)
+    df['Dates'] = pd.to_datetime(df['Dates'], exact=False, dayfirst=True)
 
     return df
