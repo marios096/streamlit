@@ -96,10 +96,10 @@ def load_data_vac():
   #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
     df = df.dropna(subset=['Price'])
-    df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
-    df['Dates'] = df[df.columns[16:12:-1]].apply(
-        lambda x: '-'.join(x.dropna().astype(str)),
-        axis=1)
+    #df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
+    #df['Dates'] = df[df.columns[16:12:-1]].apply(
+    #    lambda x: '-'.join(x.dropna().astype(str)),
+    #    axis=1)
     df['Price']=df['Price'].apply(lambda x:round(x,2))
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
