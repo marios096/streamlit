@@ -27,7 +27,6 @@ def streamlit_app():
 
     st.text("")
 
-    with pd.option_context('display.precision', 2):
         st.dataframe(clean_data)
     
    # print(clean_data)
@@ -43,7 +42,8 @@ def load_data_vac():
         lambda x: '-'.join(x.dropna().astype(str)),
         axis=1)
     #pd.set_option('precision', 2)
- 
+ pd.options.display.float_format = '{:,.2f}'.format
+df.apply(lambda x: x.astype(int) if np.allclose(x, x.astype(int)) else x)
     #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
     #df.round(2)
     #pd.set_option('display.float_format', '{:.2f}'.format)
