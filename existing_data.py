@@ -20,7 +20,7 @@ def streamlit_app():
         '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
 
     st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Antonis Savvidis]  \n[Marios Charalambous]')
+    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Marios Charalambous]  \n[Antonis Savvidis]')
 
     with st.spinner(text='Loading Data! Please wait...'):
         clean_data = load_data_vac()
