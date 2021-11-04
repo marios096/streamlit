@@ -34,7 +34,7 @@ def streamlit_app():
 
     #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
     #col1, col2, col3, col4 = st.beta_columns(4)
-    col1, col2, col3 = st.beta_columns(3)
+    #col1, col2, col3 = st.beta_columns(3)
 
    # with col1:
      #   st.warning('Confirmed cases: ' + str(int(cyprus_df['total cases'].iloc[-1])))
@@ -48,7 +48,7 @@ def streamlit_app():
    # with col4:
      #   st.info('Population Fully Vaccinated: ' + str(
      #       '{0:.2f}'.format(int(
-        ['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
+       # ['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
 
 #    with col1:
  #       st.subheader("Dates")
