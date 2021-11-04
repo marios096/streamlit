@@ -47,8 +47,6 @@ import datetime as dt
 
 PAGES = {
     "About us": existing_data
-    # st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Marios Charalambous]  \n[Antonis Savvidis]')
 }
 
 st.set_page_config(page_title="Price-Prediction", page_icon="🧊", layout='wide', initial_sidebar_state='auto')
