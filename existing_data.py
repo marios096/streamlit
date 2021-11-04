@@ -23,7 +23,7 @@ def streamlit_app():
     st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Antonis Savvidis]  \n[Marios Charalambous]')
 
     with st.spinner(text='Loading Data! Please wait...'):
-        cyprus_vac_df = load_data_vac()
+        clean_data = load_data_vac()
 
     st.text("")
 
@@ -77,7 +77,7 @@ def streamlit_app():
    # if len(multiselection) > 0:
      #   with st.beta_expander("Raw data", expanded=False):
        # st.dataframe(plot_df[["Dates"]])
-    st.dataframe(cyprus_vac_df)
+    st.dataframe(clean_data)
 
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
