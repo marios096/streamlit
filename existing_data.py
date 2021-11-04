@@ -77,8 +77,7 @@ def streamlit_app():
    # if len(multiselection) > 0:
      #   with st.beta_expander("Raw data", expanded=False):
        # st.dataframe(plot_df[["Dates"]])
-   # st.dataframe(clean_data)
-    print(clean_data)
+   st.dataframe(clean_data)
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
   #  st.subheader(
@@ -100,7 +99,8 @@ def load_data_vac():
     df['Dates'] = df[df.columns[16:12:-1]].apply(
         lambda x: '-'.join(x.dropna().astype(str)),
         axis=1)
-    df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
+    #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
+df["Price"]=df["Price"].map('{:.2f}'.format)
 
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
