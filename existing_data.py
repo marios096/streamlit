@@ -21,7 +21,7 @@ def streamlit_app():
 
     st.sidebar.title("🛈 About")
     st.sidebar.info('Created and maintained by:' + '\r' + '[Giorgos Savva](xristofo@gmail.com)')
-    st.sidebar.text('[Antonis Savvidis] \n[Marios Charalambous]')
+    st.sidebar.text_area('[Antonis Savvidis] \n[Marios Charalambous]')
 
     with st.spinner(text='Loading Data! Please wait...'):
         cyprus_vac_df = load_data_vac()
