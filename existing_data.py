@@ -45,7 +45,7 @@ def load_data_vac():
     df['Price'] = df['Price'].apply(Decimal)
     #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
     #df.round(2)
-    pd.set_option('display.float_format', '{:.2f}'.format)
+    #pd.set_option('display.float_format', '{:.2f}'.format)
 
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
