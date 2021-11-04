@@ -20,7 +20,7 @@ def streamlit_app():
         '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
 
     st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva] \n[Antonis Savvidis]  \n[Marios Charalambous]')
+    st.sidebar.info('Created and maintained by:  \n[Giorgos Savva]  \n[Antonis Savvidis]  \n[Marios Charalambous]')
 
     with st.spinner(text='Loading Data! Please wait...'):
         cyprus_vac_df = load_data_vac()
@@ -47,7 +47,8 @@ def streamlit_app():
 
    # with col4:
      #   st.info('Population Fully Vaccinated: ' + str(
-     #       '{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
+     #       '{0:.2f}'.format(int(
+        ['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
 
 #    with col1:
  #       st.subheader("Dates")
