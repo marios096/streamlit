@@ -26,8 +26,9 @@ def streamlit_app():
         clean_data = load_data_vac()
 
     st.text("")
-
-    st.dataframe(clean_data)
+    pd.set_option('precision', 4)
+    print(clean_data.to_latex(index=False))
+    #st.dataframe(clean_data)
     
    # print(clean_data)
 
