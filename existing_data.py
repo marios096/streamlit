@@ -78,7 +78,7 @@ def streamlit_app():
      #   with st.beta_expander("Raw data", expanded=False):
        # st.dataframe(plot_df[["Dates"]])
    # st.dataframe(clean_data)
-    st.write(clean_data)
+    print(clean_data)
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
   #  st.subheader(
