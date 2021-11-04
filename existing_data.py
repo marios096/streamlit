@@ -23,18 +23,16 @@ def streamlit_app():
     st.sidebar.info('Created and maintained by:' + '\r' + '[andreas christoforou](xristofo@gmail.com)')
 
     with st.spinner(text='Loading Data! Please wait...'):
-        #cyprus_df = load_data()
         cyprus_vac_df = load_data_vac()
 
     st.text("")
-    #cyprus_df['Positively Rate'] = (cyprus_df['daily new cases'] / cyprus_df['total_daily tests performed']) * 100
 
-    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed',
-                'Positively Rate']
-    colors_dict = {'daily new cases': '#1f77b4', 'daily deaths': '#2ca02c', 'Hospitalised Cases': '#9467bd',
-                   'Cases In ICUs': '#e377c2', 'total_daily tests performed': '#bcbd22', 'Positively Rate': '#bc7722'}
+#    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed',
+ #               'Positively Rate']
+  #  colors_dict = {'daily new cases': '#1f77b4', 'daily deaths': '#2ca02c', 'Hospitalised Cases': '#9467bd',
+   #                'Cases In ICUs': '#e377c2', 'total_daily tests performed': '#bcbd22', 'Positively Rate': '#bc7722'}
 
-    # features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
+    #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
     #col1, col2, col3, col4 = st.beta_columns(4)
     col1, col2, col3 = st.beta_columns(3)
 
@@ -51,36 +49,36 @@ def streamlit_app():
      #   st.info('Population Fully Vaccinated: ' + str(
      #       '{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
 
-    with col1:
-        st.subheader("Dates")
-        from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
-        to_date = st.date_input("To Date:", datetime.date.today())
-        filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
+#    with col1:
+ #       st.subheader("Dates")
+  #      from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
+   #     to_date = st.date_input("To Date:", datetime.date.today())
+    #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
 
-    with col2:
-        st.subheader("Options")
-        if st.checkbox('Logarithmic scale'):
-            yaxistype = "log"
-        else:
-            yaxistype = "linear"
+    #with col2:
+     #   st.subheader("Options")
+      #  if st.checkbox('Logarithmic scale'):
+     #       yaxistype = "log"
+    #    else:
+    #        yaxistype = "linear"
 
-        st.dataframe(filtered_df)
-        if st.checkbox('5 Days Moving Average'):
-            plot_df = filtered_df.rolling(5).sum()
-        else:
-            plot_df = filtered_df
+       # if st.checkbox('5 Days Moving Average'):
+      #      plot_df = filtered_df.rolling(5).sum()
+    #    else:
+     #       plot_df = filtered_df
 
-    with col3:
-        st.subheader("Features")
-        multiselection = st.multiselect("", features, default=features)
+  #  with col3:
+       # st.subheader("Features")
+      #  multiselection = st.multiselect("", features, default=features)
 
-        plot_df['Dates'] = filtered_df["Dates"]
+        #plot_df['Dates'] = filtered_df["Dates"]
 
-    if len(multiselection) > 0:
-        with st.beta_expander("Raw data", expanded=False):
-            st.dataframe(plot_df[["Dates"] + multiselection])
+   # if len(multiselection) > 0:
+     #   with st.beta_expander("Raw data", expanded=False):
+       # st.dataframe(plot_df[["Dates"]])
+    st.dataframe(cyprus_vac_df)
 
-        plot_date(plot_df, multiselection, colors_dict, yaxistype)
+      #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
   #  st.subheader(
    #     'Rapid test units for ' + date.today().strftime('%d-%m-%Y') + ' (by [@lolol20](https://twitter.com/lolol20))')
@@ -88,13 +86,7 @@ def streamlit_app():
    # components.iframe("https://covidmap.cy/", height=480, scrolling=False)
 
 
-#@st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
-#def load_data():
-    # df = pd.read_csv('https://raw.githubusercontent.com/xristofo/streamlit/main/share/data/owid-covid-data-cy.csv',error_bad_lines=False)
-  #  df = pd.read_csv('https://www.data.gov.cy/node/4844/download', error_bad_lines=False)
-   # df = data_cleaning(df)
 
-#    return df
 
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
