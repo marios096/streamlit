@@ -6,7 +6,7 @@ from datetime import date
 
 
 def streamlit_app():
-    
+    pd.set_option('precision', 2)
     st.title('🤑 Price Prediction 💰')
     st.info('This app displays the prices distributed by location and date')
 
@@ -34,7 +34,7 @@ def streamlit_app():
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
 def load_data_vac():
-    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true',float_format='%.0f%%', index=False, header=False)
+    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
     df = df.dropna(subset=['Price'])
     df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
