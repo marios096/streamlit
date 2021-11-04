@@ -45,12 +45,12 @@ import datetime as dt
 #i will put to comments this df=df.dropna(subset=['Price'])
 #i will put to comments this df
 
-PAGES = {
-    "About us": existing_data
-}
+#PAGES = {
+    #"About us": existing_data
+#}
 
-st.set_page_config(page_title="Covid19-Cyprus", page_icon="🧊", layout='wide', initial_sidebar_state='auto')
+#st.set_page_config(page_title="Covid19-Cyprus", page_icon="🧊", layout='wide', initial_sidebar_state='auto')
 #st.sidebar.title('🧭 Navigation')
-selection = st.sidebar.radio("", list(PAGES.keys()))
-page = PAGES[selection]
+#selection = st.sidebar.radio("", list(PAGES.keys()))
+#page = PAGES[selection]
 page.streamlit_app()
