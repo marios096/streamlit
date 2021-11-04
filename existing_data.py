@@ -100,7 +100,8 @@ def load_data_vac():
     df['Dates'] = df[df.columns[16:12:-1]].apply(
         lambda x: '-'.join(x.dropna().astype(str)),
         axis=1)
-    df['Price']=df['Price'].apply(lambda x:round(x,2))
+    df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
+
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
     return df
