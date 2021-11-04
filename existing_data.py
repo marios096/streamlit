@@ -27,7 +27,7 @@ def streamlit_app():
 
     st.text("")
 
-        st.dataframe(clean_data)
+    st.dataframe(clean_data)
     
    # print(clean_data)
 
