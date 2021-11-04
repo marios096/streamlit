@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-#import streamlit.components.v1 as components
+import streamlit.components.v1 as components
 import datetime
 from datetime import date
 
@@ -106,25 +106,25 @@ def load_data_vac():
     return df
 
 
-#def plot_date(df, selection, colors_dict, yaxistype):
-##    # st.line_chart(df[selection],use_container_width=True)
- #   plot = figure(title='', plot_width=700, plot_height=450, x_axis_type="datetime", y_axis_type=yaxistype)
+def plot_date(df, selection, colors_dict, yaxistype):
+#    # st.line_chart(df[selection],use_container_width=True)
+   plot = figure(title='', plot_width=700, plot_height=450, x_axis_type="datetime", y_axis_type=yaxistype)
 
-#    for selected_column in selection:
-#        linecolor = colors_dict[selected_column]
- #       plot.line(df['Dates'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5,
-#                  color=linecolor)
+    for selected_column in selection:
+        linecolor = colors_dict[selected_column]
+       plot.line(df['Dates'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5,
+                  color=linecolor)
 
- #   plot.legend.location = "top_left"
+   plot.legend.location = "top_left"
 
-   # st.bokeh_chart(plot, use_container_width=True)
+st.bokeh_chart(plot, use_container_width=True)
 
 
-#def data_cleaning(df):
-  #  for column in df:
- #       df[column].replace(["NaN", ":"], 0, inplace=True)
-  #      df[column] = df[column].fillna(0)
+def data_cleaning(df):
+    for column in df:
+        df[column].replace(["NaN", ":"], 0, inplace=True)
+        df[column] = df[column].fillna(0)
 
- #   df['Dates'] = pd.to_datetime(df['Dates'], exact=False, dayfirst=True)
+    df['Dates'] = pd.to_datetime(df['Dates'], exact=False, dayfirst=True)
 
-  #  return df
+    return df
