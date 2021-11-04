@@ -34,7 +34,7 @@ def streamlit_app():
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
 def load_data_vac():
-    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
+    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true',float_format='%.0f%%', index=False, header=False)
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
     df = df.dropna(subset=['Price'])
     df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
@@ -45,7 +45,6 @@ def load_data_vac():
     #df['Price'] = df['Price'].apply(lambda x: float("{:.2f}".format(x)))
     #df.round(2)
     #pd.set_option('display.float_format', '{:.2f}'.format)
-    pd.options.display.float_format = lambda x : '{:.0f}'.format(x) if round(x,0) == x else '{:,.2f}'.format(x)
     df = df.drop(columns=['Date', 'day', 'month', 'year'])
   #  airbnb.head()
     return df
