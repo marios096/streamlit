@@ -27,7 +27,7 @@ def streamlit_app():
 
     st.text("")
     pd.set_option('precision', 4)
-    print(clean_data.to_latex(index=False))
+    st.write(clean_data.to_latex(index=False))
     #st.dataframe(clean_data)
     
    # print(clean_data)
