@@ -30,3 +30,4 @@ newdf1 = airbnb.groupby(['Suburb', 'Address'])
 # print new dataframe
 #print(newdf1)
 st.write(f'Hello {newdf1}')
+st.text("Gamo tin shillaka")
