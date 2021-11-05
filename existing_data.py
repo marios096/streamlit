@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+pd.set_option('precision', 2)
+
 import streamlit.components.v1 as components
 import datetime
 from datetime import date
@@ -20,10 +22,11 @@ def streamlit_app():
         '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
 
     st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:' + '\r' + '[andreas christoforou](xristofo@gmail.com)')
+    st.sidebar.info('Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)'+ ', '+'[george savva](georgesavva@windowslive.com)'
+                    +', '+ '[george savva](georgesavva@windowslive.com)')
 
     with st.spinner(text='Loading Data! Please wait...'):
-        cyprus_vac_df = load_data_vac()
+        price_df = load_data()
 
     st.text("")
 
@@ -76,7 +79,20 @@ def streamlit_app():
    # if len(multiselection) > 0:
      #   with st.beta_expander("Raw data", expanded=False):
        # st.dataframe(plot_df[["Dates"]])
-    st.dataframe(cyprus_vac_df)
+    st.title("Make a Radio Button")
+
+    page_names = ['Checkbox', 'Button']
+
+    page = st.radio('Navigation', page_names, index=1)
+    st.write("**The variable 'page' returns:**", page)
+
+    if page == 'Checkbox':
+        st.subheader('Welcome to the Checkbox page!')
+        st.write("Nice to see you! :wave:")
+    else:
+        st.subheader("Welcome to the Button page!")
+        st.write(":thumbsup:")
+    st.dataframe(price_df)
 
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
@@ -90,7 +106,7 @@ def streamlit_app():
 
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
-def load_data_vac():
+def load_data():
     df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
   #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
@@ -99,8 +115,9 @@ def load_data_vac():
     df['Dates'] = df[df.columns[16:12:-1]].apply(
         lambda x: '-'.join(x.dropna().astype(str)),
         axis=1)
+    df['Price'] = df['Price'].astype('int')
 
-    df = df.drop(columns=['Date', 'day', 'month', 'year'])
+    df = df.drop(columns=['Date', 'day', 'month', 'year','CouncilArea','Postcode'])
   #  airbnb.head()
     return df
 
