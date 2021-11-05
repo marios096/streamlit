@@ -1,13 +1,18 @@
 import streamlit as st
 import pandas as pd
 pd.set_option('precision', 2)
-
+import numpy as np
 import streamlit.components.v1 as components
 import datetime
 from datetime import date
-
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+# from sklearn.metrics import mean_squared_error as MSE
+from xgboost import XGBRegressor
+# import xgboost as xg
 
 def streamlit_app():
+
     st.title('🤑 Price Prediction 💰')
     st.info('This app displays the prices distributed by location and date')
 
@@ -27,6 +32,7 @@ def streamlit_app():
 
     with st.spinner(text='Loading Data! Please wait...'):
         price_df = load_data()
+        pPrice = predict_price(price_df)
 
     st.text("")
 
@@ -37,7 +43,7 @@ def streamlit_app():
 
     #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
     #col1, col2, col3, col4 = st.beta_columns(4)
-    col1, col2, col3 = st.beta_columns(3)
+    #col1, col2, col3 = st.beta_columns(3)
 
    # with col1:
      #   st.warning('Confirmed cases: ' + str(int(cyprus_df['total cases'].iloc[-1])))
@@ -93,8 +99,11 @@ def streamlit_app():
     else:
         st.subheader("Welcome to the Button page!")
         st.write(":thumbsup:")
-    st.dataframe(price_df)
 
+    st.dataframe(price_df)
+    #st.bar_chart(pPrice)
+    #print(pPrice)
+    #st.write(pPrice)
       #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
   #  st.subheader(
@@ -109,7 +118,7 @@ def streamlit_app():
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
 def load_data():
     df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
-  #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
+    #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
     df = df.dropna(subset=['Price'])
     df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
@@ -122,6 +131,47 @@ def load_data():
   #  airbnb.head()
     return df
 
+def predict_price(df):
+
+    X = df.iloc[:,[0,2,3,5,7,9,10]].values
+    y = df.iloc[:, 4].values
+
+    X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
+
+    le_X_0 = LabelEncoder()
+    le_X_2 = LabelEncoder()
+    le_X_3 = LabelEncoder()
+    le_X_4 = LabelEncoder()
+    #le_X_6 = LabelEncoder()
+
+    X[:, 0] = le_X_0.fit_transform(X[:, 0])
+    X[:, 2] = le_X_2.fit_transform(X[:, 2])
+    X[:, 3] = le_X_3.fit_transform(X[:, 3])
+    X[:, 4] = le_X_4.fit_transform(X[:, 4])
+   # X[:, 6] = le_X_6.fit_transform(X[:, 6])
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    regressor = XGBRegressor()
+    regressor.fit(X_train, y_train)
+    Y_pred_train = regressor.predict(X_train)
+    y_pred = regressor.predict(X_test)
+    st.write("Accuracy attained on Training Set = ", rmsle(Y_pred_train, y_train))
+    st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
+
+    # train_dmatrix = xg.DMatrix(data=X_train, label=y_train)
+    # test_dmatrix = xg.DMatrix(data=X_test, label=y_test)
+    # param = {"booster": "gblinear", "objective": "reg:linear"}
+    # xgb_r = xg.train(params=param, dtrain=train_dmatrix, num_boost_round=10)
+    # pred = xgb_r.predict(test_dmatrix)
+    # rmse = np.sqrt(MSE(y_test, pred))
+    # print("RMSE : % f" % (rmse))
+
+    return X
+
+def rmsle(y_pred,y_test) :
+    error = np.square(np.log10(y_pred +1) - np.log10(y_test +1)).mean() ** 0.5
+    Acc = 1 - error
+    return Acc
 
 def plot_date(df, selection, colors_dict, yaxistype):
     # st.line_chart(df[selection],use_container_width=True)
@@ -145,3 +195,5 @@ def data_cleaning(df):
     df['Dates'] = pd.to_datetime(df['Dates'], exact=False, dayfirst=True)
 
     return df
+
+
