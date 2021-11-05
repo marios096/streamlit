@@ -79,7 +79,8 @@ def streamlit_app():
    # if len(multiselection) > 0:
      #   with st.beta_expander("Raw data", expanded=False):
        # st.dataframe(plot_df[["Dates"]])
-    st.title("Make a Radio Button")
+    st.title("Make a Radioo Button")
+    st.title("Make a Radioo Button")
 
     page_names = ['Checkbox', 'Button']
 
