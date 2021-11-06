@@ -19,17 +19,6 @@ def streamlit_app():
     st.text("")
     st.text("")
 
-    st.sidebar.text("")
-    st.sidebar.text("")
-
-    st.sidebar.title("🔗 Sources")
-    st.sidebar.info(
-        '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
-
-    st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)'+ ', '+'[george savva](georgesavva@windowslive.com)'
-                    +', '+ '[george savva](georgesavva@windowslive.com)')
-
     with st.spinner(text='Loading Data! Please wait...'):
         price_df = load_data()
         pPrice = predict_price(price_df)
