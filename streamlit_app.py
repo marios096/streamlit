@@ -8,6 +8,7 @@ run the app by installing streamlit with pip and typing
 import streamlit as st
 import existing_data
 import aboutus
+import clean_data
 import pandas as pd
 #import matplotlib.pyplot as plt
 import numpy as np
@@ -47,6 +48,7 @@ import datetime as dt
 #i will put to comments this df
 
 PAGES = {
+    "Cleaning Data": clean_data,
 "Training set":existing_data,
     "About us": aboutus
 
