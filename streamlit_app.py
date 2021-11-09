@@ -58,4 +58,17 @@ st.set_page_config(page_title="Price-Prediction", page_icon="🧊", layout='wide
 st.sidebar.title('🧭 Navigation')
 selection = st.sidebar.radio("", list(PAGES.keys()))
 page = PAGES[selection]
+st.sidebar.text("")
+st.sidebar.text("")
+
+st.sidebar.title("🔗 Sources")
+st.sidebar.info(
+        '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
+st.sidebar.text("")
+st.sidebar.text("")
+st.sidebar.title("🛈 About")
+st.sidebar.info(
+    'Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)' + ', ' + '[george savva](georgesavva@windowslive.com)'
+    + ', ' + '[george savva](georgesavva@windowslive.com)')
 page.streamlit_app()
+
