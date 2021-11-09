@@ -41,7 +41,7 @@ import datetime
 from datetime import date
 #import matplotlib.pyplot as plt
 #import matplotlib
-from sklearn.preprocessing import LabelEncoder
+#from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import precision_score, recall_score
