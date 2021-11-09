@@ -392,7 +392,7 @@ def predict_price_for_graph(dataset, sub):
 def make_a_graph(source):
     gp = source.groupby('x_values').mean()
 
-    st.write(gp.values)
+    #st.write(gp.values)
     p = figure()
     p.xaxis.ticker = gp.index.values
     p.vbar(x=gp.index.values, top=gp['y_values'], width=0.9)
