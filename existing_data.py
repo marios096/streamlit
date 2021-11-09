@@ -156,7 +156,7 @@ def streamlit_app():
     st.dataframe(price_df)
     if (status == 'XGBOOST'):
         #price = predict_price(price_df)
-        source = predict_price_for_graph(price_df, '')
+        source = predict_price_for_graph(price_df, 'Albion')
         make_a_graph(source)
     if (status == 'Desicion Tree Regressor'):
         price = price_predict_desicion(price_df)
