@@ -43,16 +43,18 @@ from datetime import date
 #import matplotlib
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error as MSE
+from sklearn.svm import SVC
+from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import plot_confusion_matrix, plot_roc_curve, plot_precision_recall_curve
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 # import xgboost
 # import shap
 # from matplotlib import pyplot
 from future.moves import tkinter
 from xgboost import XGBRegressor
 #import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.metrics import confusion_matrix,accuracy_score
-from sklearn.inspection import permutation_importance
+
 #matplotlib.style.use('ggplot')
 import altair as alt
 from datetime import datetime
