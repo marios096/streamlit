@@ -33,7 +33,7 @@
 # from bokeh.models.glyphs import Text
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import streamlit.components.v1 as components
 import datetime
@@ -49,17 +49,17 @@ from sklearn.metrics import mean_squared_error as MSE
 # from matplotlib import pyplot
 from future.moves import tkinter
 from xgboost import XGBRegressor
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix,accuracy_score
 from sklearn.inspection import permutation_importance
-matplotlib.style.use('ggplot')
+#matplotlib.style.use('ggplot')
 import altair as alt
 from datetime import datetime
 from bokeh.plotting import figure, output_file, show
 from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import EMPTY_LAYOUT, MISSING_RENDERERS
-silence(EMPTY_LAYOUT, True)
+#silence(EMPTY_LAYOUT, True)
 from bokeh.models import ColumnDataSource, ranges, LabelSet
 #import numpy_indexed as npi
 from pandas.core.frame import DataFrame
