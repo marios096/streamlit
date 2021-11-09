@@ -398,7 +398,7 @@ def make_a_graph(source):
     p.vbar(x=gp.index.values, top=gp['y_values'], width=0.9)
     p.xaxis.axis_label = 'Years'
     p.yaxis.axis_label = 'Prediction'
-    st.bokeh_chart(p)
+    st.bokeh_chart(p, use_container_width=True)
 
 
 def rmsle(y_pred,y_test) :
