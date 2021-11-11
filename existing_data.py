@@ -20,7 +20,6 @@
 # from sklearn.metrics import confusion_matrix, accuracy_score
 # # from bokeh.plotting import figure
 # import matplotlib.pylab as plt
-# import seaborn
 # from sklearn.preprocessing import OneHotEncoder
 # from sklearn.tree import DecisionTreeRegressor
 # from bokeh.plotting import figure, output_file, show
@@ -49,6 +48,7 @@ from sklearn.metrics import mean_squared_error as MSE
 # from matplotlib import pyplot
 #from future.moves import tkinter
 #idk if needed
+import seaborn as sns
 from xgboost import XGBRegressor
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
@@ -179,10 +179,14 @@ def streamlit_app():
     if (status == 'XGBOOST'):
        # price = predict_price(price_df)
         source = predict_price_for_graph(price_df, option[1])
-        make_a_graph(source)
+       # make_a_graph(source)
+        #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df,option[1])
-        make_a_graph(source)
+
+    make_a_graph(source)
+    distributed(price_df)
+    price_df.hist(figsize=(20, 20), xrot=-45)
 
     # status = st.selectbox(
     #    'Select a Suburb ',
@@ -428,6 +432,11 @@ def predict_price_for_graph(dataset, sub):
 
     return source
 
+def distributed(dataset):
+    sns.distplot(dataset['Price'], bins=20)
+    plt.title('Distribution of listing ratings')
+    #plt.show()
+    st.pyplot(plt)
 
 def make_a_graph(source):
     gp = source.groupby('x_values').mean()
@@ -439,6 +448,7 @@ def make_a_graph(source):
     p.xaxis.axis_label = 'Years'
     p.yaxis.axis_label = 'Prediction'
     st.bokeh_chart(p)
+
 
 
 def rmsle(y_pred,y_test) :
