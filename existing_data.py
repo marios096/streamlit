@@ -115,6 +115,32 @@ def streamlit_app():
     #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
 
     with col1:
+       
+        st.subheader("Choosing Suburb")
+        # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
+        #                                         'ML for Price'))
+        suburbs = price_df['Suburb']
+        suburbs.loc[-1] = 'All'  # adding a row
+        suburbs.index = suburbs.index + 1  # shifting index
+
+
+        suburbs.sort_index(inplace=True)
+        suburbs = suburbs.drop_duplicates()
+
+        # data=[]
+        # data.insert(0, ['All'])
+        # # pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)  # does not save changes to the original dataframe
+        #
+        # df2 = pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)
+
+        option = st.selectbox("selectbox 2", list(suburbs.items()), 0, format_func=lambda o: o[1])
+
+       # st.write(option[1])
+
+
+    with col2:
+       
+    
         st.subheader("Handling empty Prices")
         #status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
          #                                         'ML for Price'))
@@ -140,30 +166,6 @@ def streamlit_app():
       #      plot_df = filtered_df.rolling(5).sum()
     #    else:
      #       plot_df = filtered_df
-
-
-
-    with col2:
-        st.subheader("Choosing Suburb")
-        # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
-        #                                         'ML for Price'))
-        suburbs = price_df['Suburb']
-        suburbs.loc[-1] = 'All'  # adding a row
-        suburbs.index = suburbs.index + 1  # shifting index
-
-
-        suburbs.sort_index(inplace=True)
-        suburbs = suburbs.drop_duplicates()
-
-        # data=[]
-        # data.insert(0, ['All'])
-        # # pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)  # does not save changes to the original dataframe
-        #
-        # df2 = pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)
-
-        option = st.selectbox("selectbox 2", list(suburbs.items()), 0, format_func=lambda o: o[1])
-
-       # st.write(option[1])
     with col3:
         st.subheader("Choosing ML method")
         # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
