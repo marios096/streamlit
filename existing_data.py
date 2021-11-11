@@ -332,8 +332,7 @@ def price_predict_desicion(dataset, sub):
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
-    #st.dataframe(X)
-    save=X
+    
     le_X_0 = LabelEncoder()
     le_X_2 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -366,7 +365,7 @@ def price_predict_desicion(dataset, sub):
             y_values=y_pred
         ))
 
-    return source,save
+    return source
 #commetnlol
 
 def predict_price(df):
@@ -374,7 +373,7 @@ def predict_price(df):
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-
+    
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -413,7 +412,7 @@ def predict_price_for_graph(dataset, sub):
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-
+    save = X
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -441,7 +440,7 @@ def predict_price_for_graph(dataset, sub):
             y_values=y_pred
         ))
 
-    return source
+    return source,save
 
 def distributed(dataset):
     sns.distplot(dataset['Price'], bins=20)
