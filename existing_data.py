@@ -178,13 +178,12 @@ def streamlit_app():
     #st.dataframe(price_df)
     if (status == 'XGBOOST'):
        # price = predict_price(price_df)
-        source, sav = predict_price_for_graph(price_df, option[1])
+        source = predict_price_for_graph(price_df, option[1])
        # make_a_graph(source)
         #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df,option[1])
        
-    st.write(sav)
     make_a_graph(source)
     distributed(price_df)
     price_df.hist(figsize=(20, 20), xrot=-45)
@@ -412,7 +411,7 @@ def predict_price_for_graph(dataset, sub):
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-    save = X
+    st.write(X)
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -440,7 +439,7 @@ def predict_price_for_graph(dataset, sub):
             y_values=y_pred
         ))
 
-    return source,save
+    return source
 
 def distributed(dataset):
     sns.distplot(dataset['Price'], bins=20)
