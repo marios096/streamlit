@@ -316,14 +316,15 @@ def predict_price_svm(df):
 
 def price_predict_desicion(dataset, sub):
     df = dataset.copy()
-    if sub.strip():
+    #if sub.strip():
+     #   indexNames = df[~(df['Suburb'] == sub)].index
+      #  df.drop(indexNames, inplace=True)
+    if sub == 'All':
         indexNames = df[~(df['Suburb'] == sub)].index
         df.drop(indexNames, inplace=True)
-    if sub == 'All':
-        df = dataset.copy()
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
-
+    st.write(X)
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
 
     le_X_0 = LabelEncoder()
