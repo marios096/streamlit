@@ -245,7 +245,6 @@ def load_data(n):
 
 
 
-    st.dataframe(df)
 
     #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
 
