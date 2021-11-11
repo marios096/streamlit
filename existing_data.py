@@ -140,7 +140,30 @@ def streamlit_app():
     #    else:
      #       plot_df = filtered_df
 
+
+
     with col2:
+        st.subheader("Choosing Suburb")
+        # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
+        #                                         'ML for Price'))
+        suburbs = price_df['Suburb']
+        suburbs.loc[-1] = 'All'  # adding a row
+        suburbs.index = suburbs.index + 1  # shifting index
+
+
+        suburbs.sort_index(inplace=True)
+        suburbs = suburbs.drop_duplicates()
+
+        # data=[]
+        # data.insert(0, ['All'])
+        # # pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)  # does not save changes to the original dataframe
+        #
+        # df2 = pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)
+
+        option = st.selectbox("selectbox 2", list(suburbs.items()), 0, format_func=lambda o: o[1])
+
+       # st.write(option[1])
+    with col3:
         st.subheader("Choosing ML method")
         # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
         #                                         'ML for Price'))
@@ -153,12 +176,16 @@ def streamlit_app():
 
     st.dataframe(price_df)
     if (status == 'XGBOOST'):
-        price = predict_price(price_df)
-        source = predict_price_for_graph(price_df, '')
+       # price = predict_price(price_df)
+        source = predict_price_for_graph(price_df, option[1])
         make_a_graph(source)
     if (status == 'Desicion Tree Regressor'):
-        price = price_predict_desicion(price_df)
+        source = price_predict_desicion(price_df,option[1])
+        make_a_graph(source)
 
+    # status = st.selectbox(
+    #    'Select a Suburb ',
+    #    ('All', ))
 
     # price_graph = price_df['Price']
     # price_df['Price'] = price_df['Price'].astype('int')
@@ -279,7 +306,13 @@ def predict_price_svm(df):
 
 
 
-def price_predict_desicion(df):
+def price_predict_desicion(dataset, sub):
+    df = dataset.copy()
+    if sub.strip():
+        indexNames = df[~(df['Suburb'] == sub)].index
+        df.drop(indexNames, inplace=True)
+    if sub == 'All':
+        df = dataset.copy()
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
 
@@ -311,7 +344,13 @@ def price_predict_desicion(df):
 
     st.write("Accuracy attained on Training Set = ", train_err)
     st.write("Accuracy attained on Test Set = ", test_err)
-    return X
+    source = DataFrame(
+        dict(
+            x_values=X_test[:, 7],
+            y_values=y_pred
+        ))
+
+    return source
 
 
 def predict_price(df):
@@ -351,6 +390,8 @@ def predict_price_for_graph(dataset, sub):
     if sub.strip():
         indexNames = df[~(df['Suburb'] == sub)].index
         df.drop(indexNames, inplace=True)
+    if sub == 'All':
+        df = dataset.copy()
 
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
