@@ -401,17 +401,18 @@ def predict_price(df):
 
 def predict_price_for_graph(dataset, sub):
     df = dataset.copy()
-    if sub.strip():
+    #if sub.strip():
+    #    indexNames = df[~(df['Suburb'] == sub)].index
+   #     df.drop(indexNames, inplace=True)
+    if sub == 'All':
         indexNames = df[~(df['Suburb'] == sub)].index
         df.drop(indexNames, inplace=True)
-    if sub == 'All':
-        df = dataset.copy()
 
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-    st.write(X)
+    st.dataframe(df)
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
