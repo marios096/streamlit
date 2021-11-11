@@ -186,7 +186,7 @@ def streamlit_app():
 
     make_a_graph(source)
     distributed(price_df)
-  #  price_df.hist(figsize=(20, 20), xrot=-45)
+    price_df.hist(figsize=(20, 20), xrot=-45)
     #problem
     # status = st.selectbox(
     #    'Select a Suburb ',
