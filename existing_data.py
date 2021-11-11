@@ -242,10 +242,10 @@ def load_data(n):
     if n == 5:
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
         df = df.dropna(subset=['Price'])
-        st.dataframe(df)
 
 
 
+    st.dataframe(df)
 
     #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
 
