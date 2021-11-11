@@ -184,7 +184,7 @@ def streamlit_app():
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df,option[1])
        
-    st.dataframe(sav)
+    st.write(sav)
     make_a_graph(source)
     distributed(price_df)
     price_df.hist(figsize=(20, 20), xrot=-45)
