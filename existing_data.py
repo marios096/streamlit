@@ -246,7 +246,8 @@ def load_data(n):
     if n == 5:
         #df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
         #df = df.dropna(subset=['Price'])
-        df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
+        #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
+        df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
         
 
 
