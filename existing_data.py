@@ -182,7 +182,7 @@ def streamlit_app():
        # make_a_graph(source)
         #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
-        source = price_predict_desicion(price_df,option[1])
+        source = price_predict_desicion(price_df, option[1])
        
     make_a_graph(source)
     distributed(price_df)
@@ -322,11 +322,11 @@ def predict_price_svm(df):
 
 def price_predict_desicion(dataset, sub):
     df = dataset.copy()
-   # if sub.strip():
-      # indexNames = df[~(df['Suburb'] == sub)].index
-     #  df.drop(indexNames, inplace=True)
-    #if sub == 'All':
-     #  df = dataset.copy()
+    if sub.strip():
+        ndexNames = df[~(df['Suburb'] == sub)].index
+        df.drop(indexNames, inplace=True)
+    if sub == 'All':
+        df = dataset.copy()
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
@@ -400,12 +400,13 @@ def predict_price(df):
 
 def predict_price_for_graph(dataset, sub):
     df = dataset.copy()
-    if sub.strip():
-        indexNames = df[~(df['Suburb'] == sub)].index
-        df.drop(indexNames, inplace=True)
+  # if sub.strip():
+   #     indexNames = df[~(df['Suburb'] == sub)].index
+    #    df.drop(indexNames, inplace=True)
     if sub == 'All':
-        df = dataset.copy()
-
+       # df = dataset.copy()
+        ndexNames = df[~(df['Suburb'] == sub)].index
+        df.drop(indexNames, inplace=True)
 
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
