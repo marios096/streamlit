@@ -113,13 +113,14 @@ def streamlit_app():
   #      from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
    #     to_date = st.date_input("To Date:", datetime.date.today())
     #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
+    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
 
     with col1:
        
         st.subheader("Choosing Suburb")
         # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
         #                                         'ML for Price'))
-        suburbs = price_df['Suburb']
+        suburbs = df['Suburb']
         suburbs.loc[-1] = 'All'  # adding a row
         suburbs.index = suburbs.index + 1  # shifting index
 
@@ -152,13 +153,13 @@ def streamlit_app():
             # show the result using the success function
 
         if (status == 'Delete Rows'):
-            price_df = load_data(1)
+            price_df = load_data(df,1)
         if (status == 'Median for Price'):
-            price_df = load_data(2)
+            price_df = load_data(df,2)
         if (status == 'Mean for Price'):
-            price_df = load_data(3)
+            price_df = load_data(df,3)
         if (status == 'Mode for Price'):
-            price_df = load_data(4)
+            price_df = load_data(df,4)
         #if (status == 'Group'):
             #price_df = load_data(5)
 
@@ -233,8 +234,7 @@ def streamlit_app():
 
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
-def load_data(n):
-    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
+def load_data(df, n):
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
 
     #if n == 1:
