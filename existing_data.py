@@ -21,7 +21,7 @@
 # # from bokeh.plotting import figure
 # import matplotlib.pylab as plt
 # from sklearn.preprocessing import OneHotEncoder
-# from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeRegressor
 # from bokeh.plotting import figure, output_file, show
 # from bokeh.core.validation import silence
 # from bokeh.core.validation.warnings import EMPTY_LAYOUT, MISSING_RENDERERS
