@@ -323,7 +323,7 @@ def predict_price_svm(df):
 def price_predict_desicion(dataset, sub):
     df = dataset.copy()
     if sub.strip():
-        ndexNames = df[~(df['Suburb'] == sub)].index
+        indexNames = df[~(df['Suburb'] == sub)].index
         df.drop(indexNames, inplace=True)
     if sub == 'All':
         df = dataset.copy()
