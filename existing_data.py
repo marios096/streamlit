@@ -356,7 +356,7 @@ def price_predict_desicion(dataset, sub):
 
         test_err[i] = rmsle(y_test, regressor.predict(X_test))
 
-
+    y_pred = regressor.predict(X_test)
     st.write("Accuracy attained on Training Set = ", train_err)
     st.write("Accuracy attained on Test Set = ", test_err)
     source = DataFrame(
