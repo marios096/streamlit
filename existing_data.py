@@ -361,7 +361,7 @@ def price_predict_desicion(dataset, sub):
     st.write("Accuracy attained on Test Set = ", test_err)
     source = DataFrame(
         dict(
-            x_values=X_test[:, 7],
+            x_values=X_test[:, 6],
             y_values=y_pred
         ))
 
