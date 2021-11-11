@@ -175,7 +175,7 @@ def streamlit_app():
         # Male if male is selected else print female
         # show the result using the success function
 
-    st.dataframe(price_df)
+    #st.dataframe(price_df)
     if (status == 'XGBOOST'):
        # price = predict_price(price_df)
         source = predict_price_for_graph(price_df, option[1])
@@ -330,8 +330,8 @@ def price_predict_desicion(dataset, sub):
         df.drop(indexNames, inplace=True)
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
-    st.write(X)
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
+    st.dataframe(X)
 
     le_X_0 = LabelEncoder()
     le_X_2 = LabelEncoder()
