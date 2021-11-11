@@ -120,7 +120,7 @@ def streamlit_app():
          #                                         'ML for Price'))
         status = st.selectbox(
         'How would you like handle empty cells of Prices?',
-        ('Delete Rows', 'Median for Price', 'Mean for Price', 'Mode for Price', 'Group'))
+        ('Delete Rows', 'Median for Price', 'Mean for Price', 'Mode for Price'))
             # conditional statement to print
             # Male if male is selected else print female
             # show the result using the success function
@@ -133,8 +133,8 @@ def streamlit_app():
             price_df = load_data(3)
         if (status == 'Mode for Price'):
             price_df = load_data(4)
-        if (status == 'Group'):
-            price_df = load_data(5)
+        #if (status == 'Group'):
+            #price_df = load_data(5)
 
        # if st.checkbox('5 Days Moving Average'):
       #      plot_df = filtered_df.rolling(5).sum()
@@ -249,8 +249,8 @@ def load_data(n):
         #df['Price'] = df['Price'].fillna(df['Price'].mode()[0])
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mode()))
         #df = df.dropna(subset=['Price'])
-    if n == 5:
-        df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
+   # if n == 5:
+        #df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
         #df = df.dropna(subset=['Price'])
         #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
         #df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
