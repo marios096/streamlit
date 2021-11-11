@@ -175,7 +175,7 @@ def streamlit_app():
         # Male if male is selected else print female
         # show the result using the success function
 
-    #st.dataframe(price_df)
+    st.dataframe(price_df)
     if (status == 'XGBOOST'):
        # price = predict_price(price_df)
         source = predict_price_for_graph(price_df, option[1])
@@ -247,8 +247,8 @@ def load_data(n):
         #df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
         #df = df.dropna(subset=['Price'])
         #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
-        #df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
-        df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('median'))
+        df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
+        #df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('median'))
 
         
 
