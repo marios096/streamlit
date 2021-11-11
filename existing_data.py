@@ -351,7 +351,7 @@ def price_predict_desicion(dataset, sub):
         ))
 
     return source
-
+#commetnlol
 
 def predict_price(df):
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
