@@ -235,28 +235,28 @@ def load_data(n):
     df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
 
-    if n == 1:
-        df = df.dropna(subset=['Price'])
+    #if n == 1:
+        #df = df.dropna(subset=['Price'])
     if n == 2:
         #df = df.fillna(df.median())
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
-        df = df.dropna(subset=['Price'])
+        #df = df.dropna(subset=['Price'])
     if n == 3:
         #df = df.fillna(df.mean())
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mean()))
-        df = df.dropna(subset=['Price'])
+        #df = df.dropna(subset=['Price'])
     if n == 4:
         #df['Price'] = df['Price'].fillna(df['Price'].mode()[0])
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mode()))
-        df = df.dropna(subset=['Price'])
+        #df = df.dropna(subset=['Price'])
     if n == 5:
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
-        df = df.dropna(subset=['Price'])
+        #df = df.dropna(subset=['Price'])
         #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
         #df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
         #df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('median'))
 
-        
+    df = df.dropna(subset=['Price'])  
 
 
 
