@@ -14,8 +14,10 @@
 # from sklearn.linear_model import LinearRegression
 # from sklearn.ensemble import RandomForestRegressor
 # from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import StandardScaler
-# from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
 # from sklearn.svm import SVC
 # from sklearn.metrics import confusion_matrix, accuracy_score
 # # from bokeh.plotting import figure
@@ -173,7 +175,7 @@ def streamlit_app():
         #                                         'ML for Price'))
         status = st.selectbox(
             'Select a method to perform',
-            ('XGBOOST', 'Desicion Tree Regressor'))
+            ('XGBOOST', 'Desicion Tree Regressor','knn'))
         # conditional statement to print
         # Male if male is selected else print female
         # show the result using the success function
@@ -186,6 +188,8 @@ def streamlit_app():
         #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df, option[1])
+    if(status == 'knn'):
+        source=knnclassification(price_df, option[1])
        
     make_a_graph(source)
     distributed(price_df)
@@ -333,7 +337,7 @@ def price_predict_desicion(dataset, sub):
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
-    
+    st.dataframe(df)
     le_X_0 = LabelEncoder()
     le_X_2 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -343,6 +347,8 @@ def price_predict_desicion(dataset, sub):
     X[:, 2] = le_X_2.fit_transform(X[:, 2])
     X[:, 3] = le_X_3.fit_transform(X[:, 3])
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
+
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     max_depth = np.arange(1, 25)
@@ -358,8 +364,12 @@ def price_predict_desicion(dataset, sub):
         test_err[i] = rmsle(y_test, regressor.predict(X_test))
 
     y_pred = regressor.predict(X_test)
-    st.write("Accuracy attained on Training Set = ", train_err)
-    st.write("Accuracy attained on Test Set = ", test_err)
+    col5, col4 = st.columns(2)
+
+    with col5:
+        st.write("Accuracy attained on Training Set = ", train_err)
+    with col4:
+        st.write("Accuracy attained on Test Set = ", test_err)
     source = DataFrame(
         dict(
             x_values=X_test[:, 6],
@@ -399,6 +409,54 @@ def predict_price(df):
     return X
 
 
+def knnclassification(dataset, sub):
+    df = dataset.copy()
+    if sub.strip():
+        indexNames = df[~(df['Suburb'] == sub)].index
+        df.drop(indexNames, inplace=True)
+    if sub == 'All':
+        df = dataset.copy()
+    X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
+    y = df.iloc[:, 4].values
+
+    X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
+    st.dataframe(df)
+
+    le_X_0 = LabelEncoder()
+    le_X_1 = LabelEncoder()
+    le_X_3 = LabelEncoder()
+    le_X_4 = LabelEncoder()
+    le_X_5 = LabelEncoder()
+
+    X[:, 0] = le_X_0.fit_transform(X[:, 0])
+    X[:, 1] = le_X_1.fit_transform(X[:, 1])
+    X[:, 3] = le_X_3.fit_transform(X[:, 3])
+    X[:, 4] = le_X_4.fit_transform(X[:, 4])
+    X[:, 5] = le_X_5.fit_transform(X[:, 5])
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
+    classifier = KNeighborsClassifier(n_neighbors=5)
+    classifier.fit(X_train, y_train)
+    y_pred_train = classifier.predict(X_train)
+
+    y_pred = classifier.predict(X_test)
+   # st.write(confusion_matrix(y_test, y_pred))
+    #st.write(classification_report(y_test, y_pred))
+    st.write("Accuracy attained on Training Set = ", rmsle(y_pred_train, y_train))
+    st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
+
+    source = DataFrame(
+        dict(
+            x_values=X_test[:, 6],
+            y_values=y_pred
+        ))
+
+    return source
 
 
 def predict_price_for_graph(dataset, sub):
