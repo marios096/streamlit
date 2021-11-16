@@ -452,7 +452,7 @@ def knnclassification(dataset, sub):
     st.dataframe(X_test)
     source = DataFrame(
         dict(
-            x_values=X_test[:, 6],
+            x_values=X[:, 7],
             y_values=y_pred
         ))
 
