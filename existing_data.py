@@ -449,10 +449,10 @@ def knnclassification(dataset, sub):
     #st.write(classification_report(y_test, y_pred))
     st.write("Accuracy attained on Training Set = ", rmsle(y_pred_train, y_train))
     st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
-
+    st.dataframe(X_test)
     source = DataFrame(
         dict(
-            x_values=X_test[:, 7],
+            x_values=X_test[:, 6],
             y_values=y_pred
         ))
 
