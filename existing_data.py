@@ -21,7 +21,7 @@
 # # from bokeh.plotting import figure
 # import matplotlib.pylab as plt
 # from sklearn.preprocessing import OneHotEncoder
-# from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeRegressor
 # from bokeh.plotting import figure, output_file, show
 # from bokeh.core.validation import silence
 # from bokeh.core.validation.warnings import EMPTY_LAYOUT, MISSING_RENDERERS
@@ -113,41 +113,14 @@ def streamlit_app():
   #      from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
    #     to_date = st.date_input("To Date:", datetime.date.today())
     #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
+    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
 
     with col1:
-        st.subheader("Handling empty Prices")
-        #status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
-         #                                         'ML for Price'))
-        status = st.selectbox(
-        'How would you like handle empty cells of Prices?',
-        ('Delete Rows', 'Median for Price', 'Mean for Price', 'Mode for Price', 'Group'))
-            # conditional statement to print
-            # Male if male is selected else print female
-            # show the result using the success function
-
-        if (status == 'Delete Rows'):
-            price_df = load_data(1)
-        if (status == 'Median for Price'):
-            price_df = load_data(2)
-        if (status == 'Mean for Price'):
-            price_df = load_data(3)
-        if (status == 'Mode for Price'):
-            price_df = load_data(4)
-        if (status == 'Group'):
-            price_df = load_data(5)
-
-       # if st.checkbox('5 Days Moving Average'):
-      #      plot_df = filtered_df.rolling(5).sum()
-    #    else:
-     #       plot_df = filtered_df
-
-
-
-    with col2:
+       
         st.subheader("Choosing Suburb")
         # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
         #                                         'ML for Price'))
-        suburbs = price_df['Suburb']
+        suburbs = df['Suburb']
         suburbs.loc[-1] = 'All'  # adding a row
         suburbs.index = suburbs.index + 1  # shifting index
 
@@ -164,6 +137,36 @@ def streamlit_app():
         option = st.selectbox("selectbox 2", list(suburbs.items()), 0, format_func=lambda o: o[1])
 
        # st.write(option[1])
+
+
+    with col2:
+       
+    
+        st.subheader("Handling empty Prices")
+        #status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
+         #                                         'ML for Price'))
+        status = st.selectbox(
+        'How would you like handle empty cells of Prices?',
+        ('Delete Rows', 'Median for Price', 'Mean for Price', 'Mode for Price'))
+            # conditional statement to print
+            # Male if male is selected else print female
+            # show the result using the success function
+
+        if (status == 'Delete Rows'):
+            price_df = load_data(df,1)
+        if (status == 'Median for Price'):
+            price_df = load_data(df,2)
+        if (status == 'Mean for Price'):
+            price_df = load_data(df,3)
+        if (status == 'Mode for Price'):
+            price_df = load_data(df,4)
+        #if (status == 'Group'):
+            #price_df = load_data(5)
+
+       # if st.checkbox('5 Days Moving Average'):
+      #      plot_df = filtered_df.rolling(5).sum()
+    #    else:
+     #       plot_df = filtered_df
     with col3:
         st.subheader("Choosing ML method")
         # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
@@ -182,8 +185,8 @@ def streamlit_app():
        # make_a_graph(source)
         #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
-        source = price_predict_desicion(price_df,option[1])
-
+        source = price_predict_desicion(price_df, option[1])
+       
     make_a_graph(source)
     distributed(price_df)
     price_df.hist(figsize=(20, 20), xrot=-45)
@@ -232,22 +235,31 @@ def streamlit_app():
 
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
-def load_data(n):
-    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
+def load_data(df, n):
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
 
-    if n == 1:
-        df = df.dropna(subset=['Price'])
+    #if n == 1:
+        #df = df.dropna(subset=['Price'])
     if n == 2:
-        df = df.fillna(df.median())
-    if n == 3:
-        df = df.fillna(df.mean())
-    if n == 4:
-        df['Price'] = df['Price'].fillna(df['Price'].mode()[0])
-    if n == 5:
+        #df = df.fillna(df.median())
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
-        df = df.dropna(subset=['Price'])
+        #df = df.dropna(subset=['Price'])
+    if n == 3:
+        #df = df.fillna(df.mean())
+        df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mean()))
+        #df = df.dropna(subset=['Price'])
+    if n == 4:
+        #df['Price'] = df['Price'].fillna(df['Price'].mode()[0])
+        df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mode()))
+        #df = df.dropna(subset=['Price'])
+   # if n == 5:
+        #df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
+        #df = df.dropna(subset=['Price'])
+        #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
+        #df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
+        #df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('median'))
 
+    df = df.dropna(subset=['Price'])  
 
 
 
@@ -320,9 +332,8 @@ def price_predict_desicion(dataset, sub):
         df = dataset.copy()
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
-
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
-
+    
     le_X_0 = LabelEncoder()
     le_X_2 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -346,12 +357,12 @@ def price_predict_desicion(dataset, sub):
 
         test_err[i] = rmsle(y_test, regressor.predict(X_test))
 
-
+    y_pred = regressor.predict(X_test)
     st.write("Accuracy attained on Training Set = ", train_err)
     st.write("Accuracy attained on Test Set = ", test_err)
     source = DataFrame(
         dict(
-            x_values=X_test[:, 7],
+            x_values=X_test[:, 6],
             y_values=y_pred
         ))
 
@@ -363,7 +374,7 @@ def predict_price(df):
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-
+    
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -402,7 +413,7 @@ def predict_price_for_graph(dataset, sub):
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-
+    st.dataframe(df)
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
