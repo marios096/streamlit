@@ -1,40 +1,8 @@
-# import streamlit as st
-# import pandas as pd
-# pd.set_option('precision', 2)
-# import numpy as np
-# import streamlit.components.v1 as components
-# import datetime
-# from datetime import date
-# from sklearn.preprocessing import LabelEncoder
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import mean_squared_error as MSE
-# from xgboost import XGBRegressor
-# import xgboost as xg
-# from sklearn.model_selection import KFold
-# from sklearn.linear_model import LinearRegression
-# from sklearn.ensemble import RandomForestRegressor
-# from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
-
-# from sklearn.svm import SVC
-# from sklearn.metrics import confusion_matrix, accuracy_score
-# # from bokeh.plotting import figure
-# import matplotlib.pylab as plt
-# from sklearn.preprocessing import OneHotEncoder
-from sklearn.tree import DecisionTreeRegressor
-# from bokeh.plotting import figure, output_file, show
-# from bokeh.core.validation import silence
-# from bokeh.core.validation.warnings import EMPTY_LAYOUT, MISSING_RENDERERS
-# silence(EMPTY_LAYOUT, True)
-# from bokeh.models import ColumnDataSource, ranges, LabelSet
-# import numpy_indexed as npi
-# from pandas.core.frame import DataFrame
-# from bokeh.models.glyphs import Text
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 import streamlit.components.v1 as components
 import datetime
@@ -45,14 +13,8 @@ import matplotlib
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error as MSE
-# import xgboost
-# import shap
-# from matplotlib import pyplot
-#from future.moves import tkinter
-#idk if needed
 import seaborn as sns
 from xgboost import XGBRegressor
-import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix,accuracy_score
 from sklearn.inspection import permutation_importance
@@ -64,7 +26,6 @@ from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import EMPTY_LAYOUT, MISSING_RENDERERS
 silence(EMPTY_LAYOUT, True)
 from bokeh.models import ColumnDataSource, ranges, LabelSet
-#import numpy_indexed as npi
 from pandas.core.frame import DataFrame
 from bokeh.models.glyphs import Text
 
@@ -87,72 +48,38 @@ def streamlit_app():
     st.sidebar.info('Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)'+ ', '+'[george savva](georgesavva@windowslive.com)'
                     +', '+ '[george savva](georgesavva@windowslive.com)')
 
-   # with st.spinner(text='Loading Data! Please wait...'):
-        #price_df = load_data()
-      #  pPrice = predict_price(price_df)
-       # test = find_price_model(price_df)
+
     st.text("")
 
-#    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed',
- #               'Positively Rate']
-  #  colors_dict = {'daily new cases': '#1f77b4', 'daily deaths': '#2ca02c', 'Hospitalised Cases': '#9467bd',
-   #                'Cases In ICUs': '#e377c2', 'total_daily tests performed': '#bcbd22', 'Positively Rate': '#bc7722'}
-
-    #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
-    #col5, col6 = st.columns(2)
+    #creating 3 columns
     col1, col2, col3 = st.columns(3)
-
-   # with col1:
-     #   st.warning('Confirmed cases: ' + str(int(cyprus_df['total cases'].iloc[-1])))
-
-
-   # with col4:
-     #   st.info('Population Fully Vaccinated: ' + str(
-     #       '{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].max(skipna=True)) * 100 / 875899)) + "%")
-
-#    with col1:
- #       st.subheader("Dates")
-  #      from_date = st.date_input("From Date:", datetime.date(2020, 9, 1))
-   #     to_date = st.date_input("To Date:", datetime.date.today())
-    #    filtered_df = cyprus_vac_df[cyprus_vac_df["Dates"].isin(pd.date_range(from_date, to_date))]
+    #load data
     df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
 
     with col1:
-       
+        # we choose a specific suburb to predict the price of it
         st.subheader("Choosing Suburb")
-        # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
-        #                                         'ML for Price'))
+        #we wanted a list with the suburbs and the first choice to be 'All'
         suburbs = df['Suburb']
         suburbs.loc[-1] = 'All'  # adding a row
         suburbs.index = suburbs.index + 1  # shifting index
 
-
         suburbs.sort_index(inplace=True)
-        suburbs = suburbs.drop_duplicates()
+        suburbs = suburbs.drop_duplicates() #we dropped duplicated suburbs
 
-        # data=[]
-        # data.insert(0, ['All'])
-        # # pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)  # does not save changes to the original dataframe
-        #
-        # df2 = pd.concat([pd.DataFrame(data), suburbs], ignore_index=True)
+        #display list
+        option = st.selectbox("Choose suburb to predict price", list(suburbs.items()), 0, format_func=lambda o: o[1])
 
-        option = st.selectbox("selectbox 2", list(suburbs.items()), 0, format_func=lambda o: o[1])
-
-       # st.write(option[1])
-
-
+    #second col
     with col2:
        
     
         st.subheader("Handling empty Prices")
-        #status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
-         #                                         'ML for Price'))
+        #choose how to deal with empty cell of prices
+
         status = st.selectbox(
         'How would you like handle empty cells of Prices?',
         ('Delete Rows', 'Median for Price', 'Mean for Price', 'Mode for Price'))
-            # conditional statement to print
-            # Male if male is selected else print female
-            # show the result using the success function
 
         if (status == 'Delete Rows'):
             price_df = load_data(df,1)
@@ -162,77 +89,24 @@ def streamlit_app():
             price_df = load_data(df,3)
         if (status == 'Mode for Price'):
             price_df = load_data(df,4)
-        #if (status == 'Group'):
-            #price_df = load_data(5)
-
-       # if st.checkbox('5 Days Moving Average'):
-      #      plot_df = filtered_df.rolling(5).sum()
-    #    else:
-     #       plot_df = filtered_df
+    #third col-> the different machine learning algorithms that we used
     with col3:
         st.subheader("Choosing ML method")
-        # status = st.radio("Please select one: ", ('Delete Rows', 'Median for Price', 'Mean for Price','Mode for Price',
-        #                                         'ML for Price'))
+
         status = st.selectbox(
             'Select a method to perform',
-            ('XGBOOST', 'Desicion Tree Regressor','knn'))
-        # conditional statement to print
-        # Male if male is selected else print female
-        # show the result using the success function
+            ('XGBOOST', 'Desicion Tree Regressor','Knnclassification'))
 
-    #st.dataframe(price_df)
+
     if (status == 'XGBOOST'):
-       # price = predict_price(price_df)
         source = predict_price_for_graph(price_df, option[1])
-       # make_a_graph(source)
-        #distributed(price_df)
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df, option[1])
-    if(status == 'knn'):
+    if(status == 'Knnclassification'):
         source=knnclassification(price_df, option[1])
        
     make_a_graph(source)
     distributed(price_df)
-    price_df.hist(figsize=(20, 20), xrot=-45)
-    #problem
-    #done
-    # status = st.selectbox(
-    #    'Select a Suburb ',
-    #    ('All', ))
-
-    # price_graph = price_df['Price']
-    # price_df['Price'] = price_df['Price'].astype('int')
-    # sub_graph = price_df['Suburb']
-    # price_df_reloaded = price_df[['Price', 'Rooms', 'Suburb']]
-    # seaborn.set()
-    # seaborn.pairplot(price_df_reloaded, hue='Suburb', size=3)
-
-
-   #  df = pd.DataFrame({'x': pd.Series(price_graph), 'y': pd.Series(sub_graph)})
-   #  seaborn.regplot('x', 'y', data=df)
-   #  st.pyplot(plt)
-   # #
-
-   # price_df['Price'].hist(bins=100, grid=False, color='blue', figsize=(10, 6))
-   # plt.show()
-
-    #  multiselection = st.multiselect("", features, default=features)
-
-
-   # if len(multiselection) > 0:
-     #   with st.beta_expander("Raw data", expanded=False):
-       # st.dataframe(plot_df[["Dates"]])
-
-
-    #st.bar_chart(pPrice)
-    #print(pPrice)
-    #st.write(pPrice)
-      #  plot_date(plot_df, multiselection, colors_dict, yaxistype)
-
-  #  st.subheader(
-   #     'Rapid test units for ' + date.today().strftime('%d-%m-%Y') + ' (by [@lolol20](https://twitter.com/lolol20))')
-
-   # components.iframe("https://covidmap.cy/", height=480, scrolling=False)
 
 
 
@@ -240,121 +114,79 @@ def streamlit_app():
 
 @st.cache(ttl=60 * 60 * 1, allow_output_mutation=True)
 def load_data(df, n):
+    #drop duplicates
     df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
 
-    #if n == 1:
-        #df = df.dropna(subset=['Price'])
     if n == 2:
-        #df = df.fillna(df.median())
+        #find median price by grouping suburbs
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
-        #df = df.dropna(subset=['Price'])
     if n == 3:
-        #df = df.fillna(df.mean())
+        #find mean price by grouping suburbs
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mean()))
-        #df = df.dropna(subset=['Price'])
     if n == 4:
-        #df['Price'] = df['Price'].fillna(df['Price'].mode()[0])
+        #find mode price by grouping suburbs
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mode()))
-        #df = df.dropna(subset=['Price'])
-   # if n == 5:
-        #df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.median()))
-        #df = df.dropna(subset=['Price'])
-        #df['Price'] = df.groupby('Suburb').transform(lambda x: x.fillna(x.median()))
-        #df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.median()))
-        #df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('median'))
 
+   #the n == 1 wil come here
     df = df.dropna(subset=['Price'])  
 
-
-
-    #  df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
-
-   # df["Price"] = df.groupby("Suburb").transform(lambda x: x.fillna(x.mean()))
-    #df['Price'] = df['Price'].astype('float')
-
-   # df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mean()))
-   # df['Price'] = df['Price'].fillna(df.groupby('Suburb')['Price'].transform('mean'))
-    #df.loc[df.value.isnull(), 'Price'] = df.groupby('Suburb').value.transform('mean')
-
+    #change the day/month/year to year-month-date
+    #I created 3 different columns to store each value (day, month, year) and then i merged them
     df[["day", "month", "year"]] = df["Date"].str.split("/", expand=True)
     df['Dates'] = df[df.columns[16:12:-1]].apply(
         lambda x: '-'.join(x.dropna().astype(str)),
         axis=1)
-
+    #i dropped the extra 3 coli,ms that i created
+    #we also dropped councilArea and Postcode because they were unnecessary
     df = df.drop(columns=['Date', 'day', 'month', 'year','CouncilArea','Postcode'])
-  #  airbnb.head()
-   # df.hist(figsize=(20, 20), xrot=-45)
 
-    print(df.isna().sum())
+   # print(df.isna().sum())
     return df
-
-
-def predict_price_svm(df):
-    X = df.iloc[:, [0]].values
-    y = df.iloc[:, 4].values
-
-  #  X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
-
-    le_X_0 = LabelEncoder()
-    le_X_2 = LabelEncoder()
-    le_X_3 = LabelEncoder()
-    le_X_4 = LabelEncoder()
-    # le_X_6 = LabelEncoder()
-
-    X[:, 0] = le_X_0.fit_transform(X[:, 0])
-   # X[:, 2] = le_X_2.fit_transform(X[:, 2])
-    #X[:, 3] = le_X_3.fit_transform(X[:, 3])
-    #X[:, 4] = le_X_4.fit_transform(X[:, 4])
-    X = X.reshape(-1, 1)
-    y = y.reshape(-1, 1)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.fit_transform(X_test)
-    classifier_svm = SVC(kernel='linear', random_state=0)
-    classifier_svm.fit(X_train, y_train.ravel())
-    y_pred_svm = classifier_svm.predict(X_test)
-    conf_matrix_svm = confusion_matrix(y_test, y_pred_svm)
-    print(conf_matrix_svm)
-    print(accuracy_score(y_test, y_pred_svm))
-    # cat_encoder = OneHotEncoder(sparse=False)
-    # housing_cat_1hot = cat_encoder.fit_transform(X)
-    # print(housing_cat_1hot)
-
-  #  st.write("Accuracy attained on Training Set = ", rmsle(y_train, housing_predictions))
-   # st.write("Accuracy attained on Test Set = ", rmsle(housing_predictions, y_test))
-    return X
 
 
 
 def price_predict_desicion(dataset, sub):
+
+    #we created a copy to not interfere with our original dataset
     df = dataset.copy()
+
+    #removes spaces from sub(suburb)
     if sub.strip():
+        #get the index of those suburbs that are not equal with the suburb that we want
         indexNames = df[~(df['Suburb'] == sub)].index
+        #then we drop the useless suburbs
         df.drop(indexNames, inplace=True)
     if sub == 'All':
         df = dataset.copy()
+    # the :, means get the columns, and we get the values of the specific columns
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
+    # we get the 4th column which is the price
     y = df.iloc[:, 4].values
+    #we get the yera only
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
+    #print our dataset
     st.dataframe(df)
+    #we encode each column, with other words we change them into numbers 0 to n_classes-1
     le_X_0 = LabelEncoder()
     le_X_2 = LabelEncoder()
     le_X_3 = LabelEncoder()
     le_X_4 = LabelEncoder()
+
 
     X[:, 0] = le_X_0.fit_transform(X[:, 0])
     X[:, 2] = le_X_2.fit_transform(X[:, 2])
     X[:, 3] = le_X_3.fit_transform(X[:, 3])
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
 
-
+    #split, test set -> 20%, train set -> 80%
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
 
     max_depth = np.arange(1, 25)
     train_err = np.zeros(len(max_depth))
     test_err = np.zeros(len(max_depth))
     for i, d in enumerate(max_depth):
+        #make the tree
         regressor = DecisionTreeRegressor(max_depth=d)
 
         regressor.fit(X_train, y_train)
@@ -379,12 +211,14 @@ def price_predict_desicion(dataset, sub):
     return source
 #commetnlol
 
+
 def predict_price(df):
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
+    # the :, means get the columns, and we get the values of the specific columns
     y = df.iloc[:, 4].values
-
+    #we get the year only
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-    
+    #we encode each column, with other words we change them into numbers 0 to n_classes-1
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
@@ -397,12 +231,19 @@ def predict_price(df):
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
     X[:, 5] = le_X_5.fit_transform(X[:, 5])
 
+    #test set 20%, train set 80%
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    #call the ML
     regressor = XGBRegressor()
+    #train the ML
     regressor.fit(X_train, y_train)
+    #train and predict the price
     Y_pred_train = regressor.predict(X_train)
+    #give the test set to see what would be the result
     y_pred = regressor.predict(X_test)
+    #rmsle to see the accuracy for our train set
     st.write("Accuracy attained on Training Set = ", rmsle(Y_pred_train, y_train))
+    #rmsle to see the accuracy for our test set
     st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
 
 
@@ -466,7 +307,7 @@ def predict_price_for_graph(dataset, sub):
         df.drop(indexNames, inplace=True)
     if sub == 'All':
         df = dataset.copy()
-
+    # the :, means get the columns, and we get the values of the specific columns
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
 
@@ -502,9 +343,9 @@ def predict_price_for_graph(dataset, sub):
     return source
 
 def distributed(dataset):
+
     sns.distplot(dataset['Price'], bins=20)
     plt.title('Distribution of listing ratings')
-    #plt.show()
     st.pyplot(plt)
 
 def make_a_graph(source):

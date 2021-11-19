@@ -68,7 +68,7 @@ st.sidebar.text("")
 st.sidebar.text("")
 st.sidebar.title("🛈 About")
 st.sidebar.info(
-    'Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)' + ', ' + '[george savva](georgesavva@windowslive.com)'
-    + ', ' + '[george savva](georgesavva@windowslive.com)')
+    'Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)' + ', ' + '[marios charalambous](marios_char21@hotmail.com)'
+    + ', ' + '[antonis savvides](ak.....)')
 page.streamlit_app()
 

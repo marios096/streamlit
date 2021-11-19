@@ -1,18 +1,14 @@
 import streamlit as st
 import pandas as pd
+import missingno as msno
+import matplotlib.pyplot as plt
 
 import numpy as np
 
 def streamlit_app():
 
     #sidebar
-    st.sidebar.title("🔗 Sources")
-    st.sidebar.info(
-        '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)' )
 
-    st.sidebar.title("🛈 About")
-    st.sidebar.info('Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)'+ ', '+'[george savva](georgesavva@windowslive.com)'
-                    +', '+ '[george savva](georgesavva@windowslive.com)')
     #main page
     st.title('Welcome to our project')
     st.info('This project is about predicting prices based on some information that we have on our dataset')
@@ -22,16 +18,32 @@ def streamlit_app():
 
     st.header('Task 1')
     st.subheader('Cleaning Data')
+    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true')
 
     st.text('First we need to read our data from the github ' + '\n' +
             'df = pd.read_csv(https://github.com/marios096/streamlit/blob/main/data.csv?raw=true)')
     st.text('After we read the data we made a hypothesis that there might be duplicate records so we wanted to remove '
     + '\n' + 'the duplicate records based on the Suburb, Address, Date and the Price because it is not possible that '
-            + '\n' + 'the same house is sold 2 times the same date for the same price')
-    st.text('After we removed the duplicate records, we need to see what parameters have empty cells in them.'
-    + '\n' + 'To do that we wrote the command ' + '\n' +
-            'df.isna().sum()' + '\n' + 'which returns the columns with how many empty lines they contain')
+            + '\n' + 'the same house is sold 2 times the same date for the same price' +'\n'+
+            'df = df.drop_duplicates(subset=[Suburb, Address, Date, Price], keep=last)')
 
+    msno.matrix(df)
+    st.pyplot(plt)
+    df = df.drop_duplicates(subset=['Suburb', 'Address', 'Date', 'Price'], keep='last')
+    st.text('Before removing duplicated we had 63023 records and after we removed the duplicate records we can see that our records' + '\n'
+            +'have declined so our hypothesis was correct')
+    msno.matrix(df)
+    st.pyplot(plt)
+    st.text("We checked the types of our columns with df.dtypes to see if the numeric columns are numeric and not objects")
+
+    st.text(
+        'Now we need to see what parameters have empty cells in them.'
+        + '\n' + 'To do that we wrote the command ' + '\n' +
+        'df.isna().sum()' + '\n' + 'which returns the columns with how many empty lines they contain')
+    st.write(df.isna().sum())
+    st.text('\nWe can see the distribution of each of our numeric columns')
+    df.hist(figsize=(20, 20), xrot=-45)
+    st.pyplot(plt)
     st.text("Then we saw that we have empty cells on the Price column ")
     st.text('When we saw that we have empty Prices thought 3 different cases in order to fix the problem'
             + '\n' + '- The first case is to delete the rows that contain empty Prices.'
