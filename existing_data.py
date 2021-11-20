@@ -99,13 +99,14 @@ def streamlit_app():
             ('XGBOOST', 'Desicion Tree Regressor', 'Knnclassification'))
 
     if (status == 'XGBOOST'):
-        source = predict_price_for_graph(price_df, option[1])
+        source,actual = predict_price_for_graph(price_df, option[1])
     if (status == 'Desicion Tree Regressor'):
         source = price_predict_desicion(price_df, option[1])
     if (status == 'Knnclassification'):
         source = knnclassification(price_df, option[1])
 
     make_a_graph(source)
+    make_a_graph_for_actual(actual)
     distributed(price_df)
 
 
@@ -342,8 +343,13 @@ def predict_price_for_graph(dataset, sub):
             x_values=X_test[:, 7],
             y_values=y_pred
         ))
+    actual = DataFrame(
+        dict(
+            x_values=X_test[:, 7],
+            y_values=y_test
+        ))
 
-    return source
+    return source,actual
 
 
 def distributed(dataset):
@@ -352,6 +358,17 @@ def distributed(dataset):
     plt.title('Distribution of listing ratings')
     st.pyplot(plt)
 
+def make_a_graph(actual):
+    #graph on years with prediction
+    gp = actual.groupby('x_values').mean()
+
+    #st.write(gp.values)
+    p = figure()
+    p.xaxis.ticker = gp.index.values
+    p.vbar(x=gp.index.values, top=gp['y_values'], width=0.9)
+    p.xaxis.axis_label = 'Years'
+    p.yaxis.axis_label = 'Actual'
+    st.bokeh_chart(p)
 
 def make_a_graph(source):
     #graph on years with prediction
