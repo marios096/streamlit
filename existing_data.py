@@ -275,7 +275,7 @@ def knnclassification(dataset, sub):
     st.write("Accuracy attained on Training Set = ", rmsle(y_pred_train, y_train))
     st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
     #show our dataset
-    st.dataframe(X_test)
+  #  st.dataframe(X_test)
     #store data into source to make a graph
     source = DataFrame(
         dict(
@@ -356,7 +356,7 @@ def make_a_graph(source):
     #graph on years with prediction
     gp = source.groupby('x_values').mean()
 
-    st.write(gp.values)
+    #st.write(gp.values)
     p = figure()
     p.xaxis.ticker = gp.index.values
     p.vbar(x=gp.index.values, top=gp['y_values'], width=0.9)
