@@ -140,7 +140,7 @@ def load_data(df, n):
     # print(df.isna().sum())
     return df
 
-
+#desicion tree
 def price_predict_desicion(dataset, sub):
     # we created a copy to not interfere with our original dataset
     df = dataset.copy()
@@ -157,7 +157,7 @@ def price_predict_desicion(dataset, sub):
     X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
     # we get the 4th column which is the price
     y = df.iloc[:, 4].values
-    # we get the yera only
+    # we get the year only
     X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
     # print our dataset
     st.dataframe(df)
@@ -166,6 +166,7 @@ def price_predict_desicion(dataset, sub):
     le_X_2 = LabelEncoder()
     le_X_3 = LabelEncoder()
     le_X_4 = LabelEncoder()
+    #we scale the training data, scale correlates the data so it learns that each column represents different meaning of its value
 
     X[:, 0] = le_X_0.fit_transform(X[:, 0])
     X[:, 2] = le_X_2.fit_transform(X[:, 2])
@@ -175,26 +176,35 @@ def price_predict_desicion(dataset, sub):
     # split, test set -> 20%, train set -> 80%
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
+    #set the maximum depth of the tree
     max_depth = np.arange(1, 25)
+    #puts zero in the length of max_depth 1x25 with zeros in it
     train_err = np.zeros(len(max_depth))
     test_err = np.zeros(len(max_depth))
+
+    #execute loop 25 times
+    #each time it trains the algorithm and predicts it with the test set
     for i, d in enumerate(max_depth):
         # make the tree
         regressor = DecisionTreeRegressor(max_depth=d)
-
+        #train algorithm
         regressor.fit(X_train, y_train)
-
+        #store the accuracy that it gets on each iterration
         train_err[i] = rmsle(y_train, regressor.predict(X_train))
-
         test_err[i] = rmsle(y_test, regressor.predict(X_test))
 
+    #after the ML is trained we predict the price with the test set
     y_pred = regressor.predict(X_test)
+
+    #create 2 columns to show the train and test accuracy
     col5, col4 = st.columns(2)
 
     with col5:
         st.write("Accuracy attained on Training Set = ", train_err)
     with col4:
         st.write("Accuracy attained on Test Set = ", test_err)
+        # store data into source to make a graph
+
     source = DataFrame(
         dict(
             x_values=X_test[:, 6],
@@ -203,88 +213,70 @@ def price_predict_desicion(dataset, sub):
 
     return source
 
-
-# commetnlol
-
-
-def predict_price(df):
-    X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
-    # the :, means get the columns, and we get the values of the specific columns
-    y = df.iloc[:, 4].values
-    # we get the year only
-    X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
-    # we encode each column, with other words we change them into numbers 0 to n_classes-1
-    le_X_0 = LabelEncoder()
-    le_X_1 = LabelEncoder()
-    le_X_3 = LabelEncoder()
-    le_X_4 = LabelEncoder()
-    le_X_5 = LabelEncoder()
-
-    X[:, 0] = le_X_0.fit_transform(X[:, 0])
-    X[:, 1] = le_X_1.fit_transform(X[:, 1])
-    X[:, 3] = le_X_3.fit_transform(X[:, 3])
-    X[:, 4] = le_X_4.fit_transform(X[:, 4])
-    X[:, 5] = le_X_5.fit_transform(X[:, 5])
-
-    # test set 20%, train set 80%
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-    # call the ML
-    regressor = XGBRegressor()
-    # train the ML
-    regressor.fit(X_train, y_train)
-    # train and predict the price
-    Y_pred_train = regressor.predict(X_train)
-    # give the test set to see what would be the result
-    y_pred = regressor.predict(X_test)
-    # rmsle to see the accuracy for our train set
-    st.write("Accuracy attained on Training Set = ", rmsle(Y_pred_train, y_train))
-    # rmsle to see the accuracy for our test set
-    st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
-
-    return X
 
 
 def knnclassification(dataset, sub):
+    # we created a copy to not interfere with our original dataset
     df = dataset.copy()
+
+    # removes spaces from sub(suburb)
     if sub.strip():
+        # get the index of those suburbs that are not equal with the suburb that we want
         indexNames = df[~(df['Suburb'] == sub)].index
+        # then we drop the useless suburbs
         df.drop(indexNames, inplace=True)
+        #if its ALl suburbs then just copy the dataset
     if sub == 'All':
         df = dataset.copy()
+
+        # the :, means get the columns, and we get the values of the specific columns
+        # i means integer, loc means location, simple words it gets the index
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
-
+    #get only the year
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
     st.dataframe(df)
-
+    # Encode target labels with value between 0 and n_classes-1.
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
     le_X_4 = LabelEncoder()
     le_X_5 = LabelEncoder()
 
+    #we scale the training data, scale correlates the data so it learns that each column represents different meaning of its value
     X[:, 0] = le_X_0.fit_transform(X[:, 0])
     X[:, 1] = le_X_1.fit_transform(X[:, 1])
     X[:, 3] = le_X_3.fit_transform(X[:, 3])
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
     X[:, 5] = le_X_5.fit_transform(X[:, 5])
 
+    #test set -> 20%, training set -> 80%
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    #call the standardscaler
     scaler = StandardScaler()
+    # Variables that are measured at different scales do not contribute equally to the model fitting & model learned function and might end up creating a bias.
+    # Thus, to deal with this potential problem feature-wise standardized (μ=0, σ=1) is usually used prior to model fitting.
     scaler.fit(X_train)
 
+    #transform applys the scaler and returns different dataset
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
-    classifier = KNeighborsClassifier(n_neighbors=5)
-    classifier.fit(X_train, y_train)
-    y_pred_train = classifier.predict(X_train)
 
+    #call the knn having 5 neighbors which means each data point it will be compared with its 5 neighboors in order to be labelled
+    classifier = KNeighborsClassifier(n_neighbors=5)
+
+    #train the algorithm
+    classifier.fit(X_train, y_train)
+    #predict price with train set
+    y_pred_train = classifier.predict(X_train)
+    #predict price with the test set
     y_pred = classifier.predict(X_test)
-    # st.write(confusion_matrix(y_test, y_pred))
-    # st.write(classification_report(y_test, y_pred))
+    #accuracy of predictions
     st.write("Accuracy attained on Training Set = ", rmsle(y_pred_train, y_train))
     st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
+    #show our dataset
     st.dataframe(X_test)
+    #store data into source to make a graph
     source = DataFrame(
         dict(
             x_values=X_test[:, 6],
@@ -293,40 +285,56 @@ def knnclassification(dataset, sub):
 
     return source
 
-
+#xgboost
 def predict_price_for_graph(dataset, sub):
+    # we created a copy to not interfere with our original dataset
     df = dataset.copy()
+
+    # removes spaces from sub(suburb)
     if sub.strip():
+        # get the index of those suburbs that are not equal with the suburb that we want
         indexNames = df[~(df['Suburb'] == sub)].index
+        # then we drop the useless suburbs
         df.drop(indexNames, inplace=True)
+        # if its ALl suburbs then just copy the dataset
     if sub == 'All':
         df = dataset.copy()
+
     # the :, means get the columns, and we get the values of the specific columns
+    #i means integer, loc means location, simple words it gets the index
     X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     y = df.iloc[:, 4].values
 
     X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
     st.dataframe(df)
+    # Encode target labels with value between 0 and n_classes-1.
     le_X_0 = LabelEncoder()
     le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
     le_X_4 = LabelEncoder()
     le_X_5 = LabelEncoder()
-
+    #we scale the training data, scale correlates the data so it learns that each column represents different meaning of its value
     X[:, 0] = le_X_0.fit_transform(X[:, 0])
     X[:, 1] = le_X_1.fit_transform(X[:, 1])
     X[:, 3] = le_X_3.fit_transform(X[:, 3])
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
     X[:, 5] = le_X_5.fit_transform(X[:, 5])
 
+    #20% for test, 80% for train
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    #calls the ML method
     regressor = XGBRegressor()
+    #train ML with train data
     regressor.fit(X_train, y_train)
+    #predict price with train set
     Y_pred_train = regressor.predict(X_train)
+    #predict price with test set
     y_pred = regressor.predict(X_test)
 
+    #find accuracy
     st.write("Accuracy attained on Training Set = ", rmsle(Y_pred_train, y_train))
     st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))
+    #store data into source to make a graph
 
     source = DataFrame(
         dict(
@@ -338,12 +346,14 @@ def predict_price_for_graph(dataset, sub):
 
 
 def distributed(dataset):
+    #simple graph on distribution of the price
     sns.distplot(dataset['Price'], bins=20)
     plt.title('Distribution of listing ratings')
     st.pyplot(plt)
 
 
 def make_a_graph(source):
+    #graph on years with prediction
     gp = source.groupby('x_values').mean()
 
     st.write(gp.values)
@@ -354,102 +364,9 @@ def make_a_graph(source):
     p.yaxis.axis_label = 'Prediction'
     st.bokeh_chart(p)
 
-
+#accuracy of our algorithm
 def rmsle(y_pred, y_test):
     error = np.square(np.log10(y_pred + 1) - np.log10(y_test + 1)).mean() ** 0.5
     Acc = 1 - error
     return Acc
-
-
-def plot_date(df, selection, colors_dict, yaxistype):
-    # st.line_chart(df[selection],use_container_width=True)
-    plot = figure(title='', plot_width=700, plot_height=450, x_axis_type="datetime", y_axis_type=yaxistype)
-
-    for selected_column in selection:
-        linecolor = colors_dict[selected_column]
-        plot.line(df['Dates'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5,
-                  color=linecolor)
-
-    plot.legend.location = "top_left"
-
-    st.bokeh_chart(plot, use_container_width=True)
-
-
-def data_cleaning(df):
-    for column in df:
-        df[column].replace(["NaN", ":"], 0, inplace=True)
-        df[column] = df[column].fillna(0)
-
-    df['Dates'] = pd.to_datetime(df['Dates'], exact=False, dayfirst=True)
-
-    return df
-
-
-def find_price_model(df):
-    # X = df.iloc[:, [0]].values
-
-    df = pd.read_csv('https://github.com/marios096/streamlit/blob/main/data.csv?raw=true').sample(n=5000,
-                                                                                                  random_state=42)
-
-    df_filter = df[df['Price'] > 0].copy()
-
-    # df_filter = df[df['price'] <= df['price'].mean() + df['price'].std()].copy()
-    df['Suburb_cat'] = df['Suburb'].astype('category')
-    df['Suburb_cat'] = df['Suburb_cat'].cat.codes
-    df['Method_cat'] = df['Method'].astype('category')
-    df['Method_cat'] = df['Method_cat'].cat.codes
-    df['Type_cat'] = df['Type'].astype('category')
-    df['Type_cat'] = df['Type_cat'].cat.codes
-    df['Rooms_cat'] = df['Rooms'].astype('category')
-    df['Rooms_cat'] = df['Rooms_cat'].cat.codes
-    features = ['Suburb_cat', 'Rooms_cat', 'Type_cat', 'Method_cat']
-
-    kf = KFold(n_splits=10, random_state=42, shuffle=True)
-
-    y_pred_rf = []
-    y_true_rf = []
-    for train_index, test_index in kf.split(df_filter):
-        df_test = df_filter.iloc[test_index]
-        df_train = df_filter.iloc[train_index]
-
-        X_train = np.array(df_train[features])
-        y_train = np.array(df_train['Price'])
-        X_test = np.array(df_test[features])
-        y_test = np.array(df_test['Price'])
-        model = RandomForestRegressor(n_estimators=100, max_depth=100, random_state=42)
-        model.fit(X_train, y_train)
-        y_pred_rf.append(model.predict(X_test)[0])
-        st.write(y_pred_rf)
-        y_true_rf.append(y_test[0])
-    st.write("Mean Square Error (Random Forest): ", MSE(y_pred_rf, y_true_rf))
-
-    #  df_filter = df[df['Price'] <= df['Price'].mean() + df['Price'].std()].copy()
-    #  y_pred = []
-    #  y_true = []
-    #  kf = KFold(n_splits=10, random_state=42, shuffle=True)
-    #  le_X_0 = LabelEncoder()
-    # # X[:, 0] = le_X_0.fit_transform(X[:, 0])
-    #  for train_index, test_index in kf.split(df_filter):
-    #      df_test = df_filter.iloc[test_index]
-    #      df_train = df_filter.iloc[train_index]
-    #      df_train['Suburb']=le_X_0.fit_transform(df_train['Suburb'])
-    #      df_test['Suburb']=le_X_0.fit_transform(df_test['Suburb'])
-    #
-    #      X_train = np.array(df_train['Suburb']).reshape(-1, 1)
-    #      y_train = np.array(df_train['Price']).reshape(-1, 1)
-    #      X_test = np.array(df_test['Suburb']).reshape(-1, 1)
-    #      y_test = np.array(df_test['Price']).reshape(-1, 1)
-    #      model = LinearRegression()
-    #      model.fit(X_train, y_train)
-    #     # model = XGBRegressor()
-    #     # model.fit(X_train, y_train)
-    #      y_pred.append(model.predict(X_test)[0])
-    #      y_true.append(y_test[0])
-    #     # st.write("Mean Square Error: ", mean_squared_error(y_true, y_pred))
-    #      st.write({'Actual': y_true, 'Predicted': y_pred})
-    #      st.write("Mean Square Error: ", MSE(y_true, y_pred))
-    # rmse = MSE(y_true, y_pred)
-    #  st.write("RMSE : % f" % (rmse))
-    return df
-
 
