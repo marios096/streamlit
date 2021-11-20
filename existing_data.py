@@ -358,7 +358,7 @@ def distributed(dataset):
     plt.title('Distribution of listing ratings')
     st.pyplot(plt)
 
-def make_a_graph(actual):
+def make_a_graph_for_actual(actual):
     #graph on years with prediction
     gp = actual.groupby('x_values').mean()
 
