@@ -154,25 +154,26 @@ def price_predict_desicion(dataset, sub):
     if sub == 'All':
         df = dataset.copy()
     # the :, means get the columns, and we get the values of the specific columns
-    X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values
+    X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values
     # we get the 4th column which is the price
     y = df.iloc[:, 4].values
     # we get the year only
-    X[:, 6] = pd.DatetimeIndex(X[:, 6]).year
+    X[:, 7] = pd.DatetimeIndex(X[:, 7]).year
     # print our dataset
     st.dataframe(df)
     # we encode each column, with other words we change them into numbers 0 to n_classes-1
     le_X_0 = LabelEncoder()
-    le_X_2 = LabelEncoder()
+    le_X_1 = LabelEncoder()
     le_X_3 = LabelEncoder()
     le_X_4 = LabelEncoder()
+    le_X_5 = LabelEncoder()
     #we scale the training data, scale correlates the data so it learns that each column represents different meaning of its value
 
     X[:, 0] = le_X_0.fit_transform(X[:, 0])
-    X[:, 2] = le_X_2.fit_transform(X[:, 2])
+    X[:, 1] = le_X_1.fit_transform(X[:, 1])
     X[:, 3] = le_X_3.fit_transform(X[:, 3])
     X[:, 4] = le_X_4.fit_transform(X[:, 4])
-
+    X[:, 5] = le_X_5.fit_transform(X[:, 5])
     # split, test set -> 20%, train set -> 80%
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
@@ -207,7 +208,7 @@ def price_predict_desicion(dataset, sub):
 
     source = DataFrame(
         dict(
-            x_values=X_test[:, 6],
+            x_values=X_test[:, 7],
             y_values=y_pred
         ))
 
