@@ -42,14 +42,6 @@ def streamlit_app():
     st.sidebar.text("")
     st.sidebar.text("")
 
-    st.sidebar.title("🔗 Sources")
-    st.sidebar.info(
-        '[Data Science Class](https://elearning.cut.ac.cy/course/view.php?id=693)')
-
-    st.sidebar.title("🛈 About")
-    st.sidebar.info(
-        'Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)' + ', ' + '[george savva](georgesavva@windowslive.com)'
-        + ', ' + '[george savva](georgesavva@windowslive.com)')
 
     st.text("")
 
