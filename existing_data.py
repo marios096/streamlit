@@ -100,13 +100,15 @@ def streamlit_app():
 
     if (status == 'XGBOOST'):
         source,actual = predict_price_for_graph(price_df, option[1])
+        make_a_graph(source)
+        make_a_graph_for_actual(actual)
     if (status == 'Desicion Tree Regressor'):
         source,actual = price_predict_desicion(price_df, option[1])
+        make_a_graph(source)
+        make_a_graph_for_actual(actual)
     if (status == 'Knnclassification'):
         source,actual = knnclassification(price_df, option[1])
 
-    make_a_graph(source)
-    make_a_graph_for_actual(actual)
     distributed(price_df)
 
 
