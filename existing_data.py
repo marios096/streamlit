@@ -28,7 +28,7 @@ silence(EMPTY_LAYOUT, True)
 from bokeh.models import ColumnDataSource, ranges, LabelSet
 from pandas.core.frame import DataFrame
 from bokeh.models.glyphs import Text
-
+from sklearn.tree import DecisionTreeRegressor
 def streamlit_app():
 
     st.title('Welcome to our project')
@@ -63,8 +63,8 @@ def streamlit_app():
 
     #second col
     with col2:
-       
-    
+
+
         st.subheader("Handling empty Prices")
         #choose how to deal with empty cell of prices
 
@@ -95,7 +95,7 @@ def streamlit_app():
         source = price_predict_desicion(price_df, option[1])
     if(status == 'Knnclassification'):
         source=knnclassification(price_df, option[1])
-       
+
     make_a_graph(source)
     distributed(price_df)
 
@@ -119,7 +119,7 @@ def load_data(df, n):
         df['Price'] = df.groupby(['Suburb'])['Price'].apply(lambda x: x.fillna(x.mode()))
 
    #the n == 1 wil come here
-    df = df.dropna(subset=['Price'])  
+    df = df.dropna(subset=['Price'])
 
     #change the day/month/year to year-month-date
     #I created 3 different columns to store each value (day, month, year) and then i merged them
@@ -133,7 +133,6 @@ def load_data(df, n):
 
    # print(df.isna().sum())
     return df
-
 
 
 def price_predict_desicion(dataset, sub):
@@ -200,8 +199,7 @@ def price_predict_desicion(dataset, sub):
         ))
 
     return source
-
-
+#commetnlol
 
 def knnclassification(dataset, sub):
     df = dataset.copy()
