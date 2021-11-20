@@ -7,7 +7,6 @@ run the app by installing streamlit with pip and typing
 
 import streamlit as st
 import existing_data
-import aboutus
 import clean_data
 import pandas as pd
 #import matplotlib.pyplot as plt
@@ -50,7 +49,6 @@ import datetime as dt
 PAGES = {
     "Cleaning Data": clean_data,
 "Training set":existing_data,
-    "About us": aboutus
 
 }
 
@@ -69,6 +67,6 @@ st.sidebar.text("")
 st.sidebar.title("🛈 About")
 st.sidebar.info(
     'Created and maintained by:' + '\r' + '[george savva](georgesavva@windowslive.com)' + ', ' + '[marios charalambous](marios_char21@hotmail.com)'
-    + ', ' + '[antonis savvides](ak.....)')
+    + ', ' + '[antonis savvides](a.savvides96@gmail.com)')
 page.streamlit_app()
 

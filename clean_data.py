@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 import numpy as np
 
@@ -58,24 +59,29 @@ def streamlit_app():
             + '\n' + 'to train and test the dataset. We implemented the project with 2 different methods to see which one is the best '
             + '\n' + 'because there are plenty of algorithms that can do this task.'
             + '\n' + 'The first method is the XGBOOST and it is implemented with the library from xgboost import XGBRegressor'
-            + '\n' + ' def predict_price(df):' + '\n' + '  X = df.iloc[:,[0,2,3,5,7,9,10]].values' + '\n' + '  y = df.iloc[:, 4].values'
-            + '\n' + '  X[:, 6] = pd.DatetimeIndex(X[:, 6]).year' + '\n' + '  le_X_0 = LabelEncoder()' + '\n' + '  le_X_2 = LabelEncoder()'
+            + '\n' + ' def predict_price_for_graph(dataset, sub):' + '\n' + '  df = dataset.copy()'+ '\n' + '  if sub.strip():'
+            + '\n' + '    indexNames = df[~(df[Suburb] == sub)].index'+ '\n' + '    df.drop(indexNames, inplace=True)'
+            + '\n' + '  if sub == All:'+ '\n' + '    df = dataset.copy()'
+            + '\n' + '  X = df.iloc[:,[0,1,2,3,5,7,9,10]].values' + '\n' + '  y = df.iloc[:, 4].values'
+            + '\n' + '  X[:, 7] = pd.DatetimeIndex(X[:, 7]).year' + '\n' + '  le_X_0 = LabelEncoder()' + '\n' + '  le_X_2 = LabelEncoder()'
             + '\n' + '  le_X_3 = LabelEncoder()' + '\n' + '  le_X_4 = LabelEncoder()' + '\n' + '  X[:, 0] = le_X_0.fit_transform(X[:, 0])'
-            + '\n' + '  X[:, 2] = le_X_2.fit_transform(X[:, 2])' + '\n' + '  X[:, 3] = le_X_3.fit_transform(X[:, 3])'
-            + '\n' + '  X[:, 4] = le_X_4.fit_transform(X[:, 4])'
+            + '\n' + '  X[:, 1] = le_X_1.fit_transform(X[:, 1])' + '\n' + '  X[:, 3] = le_X_3.fit_transform(X[:, 3])'
+            + '\n' + '  X[:, 4] = le_X_4.fit_transform(X[:, 4])' + '\n' + '  X[:, 5] = le_X_5.fit_transform(X[:, 5])'
             + '\n' + '  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)'
             + '\n' + '  regressor = XGBRegressor()' + '\n' + '  regressor.fit(X_train, y_train)'
             + '\n' + '  Y_pred_train = regressor.predict(X_train)' + '\n' + '  y_pred = regressor.predict(X_test)'
             + '\n' + '  st.write("Accuracy attained on Training Set = ", rmsle(Y_pred_train, y_train))'
             + '\n' + '  st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))'
-            + '\n' + '  return X'
             + '\n' + 'Firstly we turn string into value so the machine can understand the data, then we seperate the data'
             + '\n' + 'to train set which is the 80% of our data and the test set which is the 20% of our dataset'
             + '\n' + 'Then we apply the method and then print the accuracy of the training and test set')
     st.text("")
     st.subheader('Desicion Tree Regressor')
     st.text('The second method that the user can select is the Desicion Tree Regressor and it is implemented as shown below'
-    + '\n' + 'def price_predict_desicion(df):'
+    + '\n' + 'def price_predict_desicion(dataset, sub):'
+            + '\n' + '  df = dataset.copy()' + '\n' + '    if sub.strip():'
+            + '\n' + '      indexNames = df[~(df[Suburb] == sub)].index' + '\n' + '      df.drop(indexNames, inplace=True)'
+            + '\n' + '    if sub == All:' + '\n' + '      df = dataset.copy()'
             + '\n' + '    X = df.iloc[:, [0, 2, 3, 5, 7, 9, 10]].values'
             + '\n' + '    y = df.iloc[:, 4].values'
 
@@ -106,10 +112,55 @@ def streamlit_app():
 
             + '\n' + '    st.write("Accuracy attained on Training Set = ", train_err)'
             + '\n' + '    st.write("Accuracy attained on Test Set = ", test_err)'
-            + '\n' + '    return X'
             + '\n' + 'As before we trasnform our dataset in order to be understandable by the machine and then we split'
             + '\n' + 'the dataset to 80% training set and 20% testing set'
             + '\n' + 'Then we define our depth that the tree will reach and we execute the method until we reach the max depth'
             + '\n' + 'and then we print the accuracy of each set and in this case we will have an array that will be the accuracy'
                      + '\n' + 'of each iteration until it reaches the max depth')
 
+    st.subheader('knnclassification')
+    st.text('The third method that the user can select is the K nearest Neighboor'
+    + '\n' + 'def knnclassification(dataset, sub):'
+            + '\n' + 'def price_predict_desicion(dataset, sub):'
+            + '\n' + '  df = dataset.copy()' + '\n' + '    if sub.strip():'
+            + '\n' + '      indexNames = df[~(df[Suburb] == sub)].index' + '\n' + '      df.drop(indexNames, inplace=True)'
+            + '\n' + '    if sub == All:' + '\n' + '      df = dataset.copy()'
+            + '\n' + '    X = df.iloc[:, [0, 1, 2, 3, 5, 7, 9, 10]].values'
+            + '\n' + '    y = df.iloc[:, 4].values'
+
+            + '\n' + '    X[:, 7] = pd.DatetimeIndex(X[:, 7]).year'
+
+            + '\n' + '    le_X_0 = LabelEncoder()'
+            + '\n' + '    le_X_1 = LabelEncoder()'
+            + '\n' + '    le_X_3 = LabelEncoder()'
+            + '\n' + '    le_X_4 = LabelEncoder()'
+            + '\n' + '    le_X_5 = LabelEncoder()'
+            + '\n' + '    X[:, 0] = le_X_0.fit_transform(X[:, 0])'
+            + '\n' + '    X[:, 1] = le_X_2.fit_transform(X[:, 1])'
+            + '\n' + '    X[:, 3] = le_X_3.fit_transform(X[:, 3])'
+            + '\n' + '    X[:, 4] = le_X_4.fit_transform(X[:, 4])'
+            + '\n' + '    X[:, 5] = le_X_4.fit_transform(X[:, 5])'
+            + '\n' + '    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)'
+            + '\n' + '    scaler = StandardScaler()'
+            + '\n' + '    scaler.fit(X_train)'
+            + '\n' + '    X_train = scaler.transform(X_train)'
+            + '\n' + '    X_test = scaler.transform(X_test)'
+            + '\n' + '    classifier = KNeighborsClassifier(n_neighbors=5)'
+            + '\n' + '    classifier.fit(X_train, y_train)'
+            + '\n' + '    y_pred_train = classifier.predict(X_train)'
+            + '\n' + '    y_pred = classifier.predict(X_test)'
+            + '\n' + '    st.write("Accuracy attained on Training Set = ", rmsle(y_pred_train, y_train))'
+            + '\n' + '    st.write("Accuracy attained on Test Set = ", rmsle(y_pred, y_test))'
+
+            )
+    st.subheader('Correlation Matrix')
+    corr_matrix = df.corr()
+    fig, ax = plt.subplots()
+    ax = sns.heatmap(corr_matrix,
+                     annot=True,
+                     linewidths=0.5,
+                     fmt=".2f",
+                     cmap="YlGnBu")
+
+    bottom, top = ax.get_ylim()
+    st.pyplot(fig)
