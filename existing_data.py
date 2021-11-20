@@ -101,9 +101,9 @@ def streamlit_app():
     if (status == 'XGBOOST'):
         source,actual = predict_price_for_graph(price_df, option[1])
     if (status == 'Desicion Tree Regressor'):
-        source = price_predict_desicion(price_df, option[1])
+        source,actual = price_predict_desicion(price_df, option[1])
     if (status == 'Knnclassification'):
-        source = knnclassification(price_df, option[1])
+        source,actual = knnclassification(price_df, option[1])
 
     make_a_graph(source)
     make_a_graph_for_actual(actual)
@@ -212,8 +212,12 @@ def price_predict_desicion(dataset, sub):
             x_values=X_test[:, 7],
             y_values=y_pred
         ))
-
-    return source
+    actual = DataFrame(
+        dict(
+            x_values=X_test[:, 7],
+            y_values=y_test
+        ))
+    return source, actual
 
 
 
@@ -281,11 +285,15 @@ def knnclassification(dataset, sub):
     #store data into source to make a graph
     source = DataFrame(
         dict(
-            x_values=X_test[:, 6],
+            x_values=X_test[:, 7],
             y_values=y_pred
         ))
-
-    return source
+    actual = DataFrame(
+        dict(
+            x_values=X_test[:, 7],
+            y_values=y_test
+        ))
+    return source, actual
 
 #xgboost
 def predict_price_for_graph(dataset, sub):
@@ -349,7 +357,7 @@ def predict_price_for_graph(dataset, sub):
             y_values=y_test
         ))
 
-    return source,actual
+    return source, actual
 
 
 def distributed(dataset):
